@@ -1,0 +1,506 @@
+openapi: 3.0.0
+info:
+  description: API description for the rideshare backend.
+  version: "0.1.0"
+  title: Rideshare
+  contact:
+    email: quan@mqt.io
+tags:
+  - name: User
+    description: User operations
+  - name: Ride
+    description: Ride operations
+paths:
+  '/users':
+    get:
+      tags:
+        - User
+      summary: Get list of users matching a given query
+      description: This is only accessible by an administrator. Returns all users if no email is provided
+      operationId: getUsers
+      parameters:
+        - name: email
+          in: query
+          description: email of user to match
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful fetch operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '401':
+          description: User not authenticated
+        '403':
+          description: User not authorized
+        '500':
+          description: Internal server error
+    post:
+      tags:
+        - User
+      summary: Create user
+      description: This is the endpoint for signing up users.
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: Created user object
+        required: true
+      responses:
+        '201':
+          description: User successfully created
+        '400':
+          description: Bad value in request body
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - User
+      summary: Delete all users
+      description: This is a testing endpoint not meant for production. This is only accessible by an administrator
+      operationId: deleteAllUsers
+      responses:
+        '200':
+          description: Users successfully deleted
+        '401':
+          description: User not authenticated
+        '403':
+          description: User not authorized
+        '500':
+          description: Internal server error
+  '/users/{userId}':
+    get:
+      tags:
+        - User
+      summary: Get user by id
+      description: This is only accessible by an authenticated user with the given id or an administrator.
+      operationId: getUserById
+      parameters:
+        - name: userId
+          in: path
+          description: id of the user to fetch.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful fetch operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid user id supplied
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tag:
+                      type: string
+                      description: Error tag provided in API response
+                      example: invalidId
+                    params:
+                      type: array
+                      items:
+                        type: string
+                        description: Invalid id provided
+                        example: '1.2'
+        '401':
+          description: User not authenticated
+        '403':
+          description: User not authorized
+        '404':
+          description: User not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - User
+      summary: Update user information
+      description: This is only accessible by a authenticated user with the given id.
+      operationId: updateUser
+      parameters:
+        - name: userId
+          in: path
+          description: id of user to be updated
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User successfully updated
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tag:
+                      type: string
+                      description: Error tag provided in API response
+                      example: badValue
+                    params:
+                      type: array
+                      items:
+                        type: string
+                        description: Error parameters
+                        example: email
+        '401':
+          description: User not authenticated
+        '403':
+          description: User not authorized
+        '404':
+          description: User not found
+        '500':
+          description: Internal server error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: Updated user object
+        required: true
+    delete:
+      tags:
+        - User
+      summary: Delete user
+      description: This is only accessible by an authenticated user with the given id or an administrator.
+      operationId: deleteUser
+      parameters:
+        - name: userId
+          in: path
+          description: id of user to be deleted
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User successfully deleted
+        '400':
+          description: Invalid user id supplied
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tag:
+                      type: string
+                      description: Error tag provided in API response
+                      example: invalidId
+                    params:
+                      type: array
+                      items:
+                        type: string
+                        description: Invalid id provided
+                        example: '1.2'
+        '401':
+          description: User not authenticated
+        '403':
+          description: User not authorized
+        '404':
+          description: User not found
+        '500':
+          description: Internal server error
+  '/users/{userId}/rides':
+    get:
+      tags:
+        - User
+        - Ride
+      summary: Get all rides associated with a user
+      description: This is only accessible by an authenticated user with the given id or an administrator.
+      operationId: getUserRides
+      parameters:
+        - name: userId
+          in: path
+          description: id of user to look up
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful fetch operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ride'
+        '400':
+          description: Invalid user id supplied
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tag:
+                      type: string
+                      description: Error tag provided in API response
+                      example: invalidId
+                    params:
+                      type: array
+                      items:
+                        type: string
+                        description: Invalid id provided
+                        example: '1.2'
+        '401':
+          description: User not authenticated
+        '403':
+          description: User not authorized
+        '404':
+          description: User not found
+        '500':
+          description: Internal server error
+  '/rides':
+    get:
+      tags:
+        - Ride
+      summary: Get list of rides matching a given query
+      description: This returns all rides if no query parameters are provided.
+      operationId: getRides
+      parameters:
+        - name: startLocation
+          in: query
+          description: start location of rides to match
+          required: false
+          schema:
+            type: string
+        - name: destination
+          in: query
+          description: destination of rides to match
+          required: false
+          schema:
+            type: string
+        - name: date
+          in: query
+          description: date of rides to match
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Successful fetch operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ride'
+        '401':
+          description: User not authenticated
+        '403':
+          description: User not authorized
+        '500':
+          description: Internal server error
+    post:
+      tags:
+        - Ride
+      summary: Create a ride
+      description: This is only accessible by an authenticated user.
+      operationId: createRide
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from:
+                  type: string
+                  description: ride start location
+                  example: San Luis Obispo
+                to:
+                  type: string
+                  description: ride destination
+                  example: San Diego
+                date:
+                  type: string
+                  format: date
+                  
+                driver:
+                  type: integer
+                  description: id of user offering ride
+                  example: 1
+                capacity:
+                  type: integer
+                  description: number of available seats for passengers
+        description: Created user object
+        required: true
+      responses:
+        '201':
+          description: Ride successfully created
+        '400':
+          description: Bad parameter in request body
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tags:
+                      type: string
+                      example: missingField
+                    params:
+                      type: array
+                      items:
+                        type: string
+                        example: email
+                    
+        '500':
+          description: Internal server error
+        
+servers:
+  - url: 'http://localhost:5000/'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: unique user id
+          example: 1
+        firstName:
+          type: string
+          description: user's given name
+          example: Joe
+        lastName:
+          type: string
+          description: user's family name
+          example: Emenaker
+        email:
+          type: string
+          description: unique user email
+          example: jemenake@calpoly.edu
+        password:
+          type: string
+          format: password
+          description: user's password (ignore this security risk for now...)
+          example: S3CR3Tp4ssw0rd
+      xml:
+        name: User
+    Ride:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: unique ride id
+          example: 7
+        from:
+          type: string
+          description: ride start location
+          example: San Luis Obispo
+        to:
+          type: string
+          description: ride destination
+          example: San Diego
+        date:
+          type: string
+          description: date of departure
+        timeRange:
+          type: object
+          description: Expected departure time range.
+          properties:
+            description:
+              type: string
+              description: friendly time range description
+              example: Early afternoon
+            start_time:
+              type: integer
+              format: int32
+              description: time range start time
+              example: 12
+            end_time:
+              type: integer
+              format: int32
+              description: time range end time
+              example: 15
+        actual_time:
+          type: string
+          format: date-time
+          description: actual ride departure time
+          example: '2018-10-01T13:30:00.000'
+        capacity:
+          type: integer
+          description: total number of passenger seats offered by the ride
+          example: 3
+        driver:
+          type: object
+          description: user offering the ride
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: unique user id
+              example: 1
+            firstName:
+              type: string
+              description: user's given name
+              example: Joe
+            lastName:
+              type: string
+              description: user's family name
+              example: Emenaker
+        passengers:
+          type: array
+          items:
+            type: object
+            description: user interested in the ride
+            properties:
+              id:
+                type: integer
+                format: int64
+                description: unique user id
+                example: 2
+              firstName:
+                type: string
+                description: user's given name
+                example: Kendrick
+              lastName:
+                type: string
+                description: user's family name
+                example: Lamar
+              status:
+                type: string
+                description: user's passenger status
+                example: CONFIRMED
+      xml:
+        name: Ride
+    Error:
+      type: object
+      properties:
+        tags:
+          type: string
+          example: missingField
+        params:
+          type: array
+          items:
+            type: string
+            example: email
+      xml:
+        name: Error

@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+flask-restful = "*"
+flask-sqlalchemy = "*"
+requests = "*"
+webargs = "*"
+python-dateutil = "*"
+
+[dev-packages]
+pylint = "*"
+rope = "*"
+
+[requires]
+python_version = "3.7"
