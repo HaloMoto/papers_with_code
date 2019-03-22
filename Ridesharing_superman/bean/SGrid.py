@@ -45,8 +45,8 @@ class SGrid:
 
     # 增加一个接载点历史节点
     def add_pickup_history_point(self, point):
-        self.pickup_history.append(point)
+        self.pickup_history.append([point[0], point[1], self.grid_id, point[2]])
 
     # 增加一个传送点历史节点
     def add_delivery_history_point(self, point):
-        self.delivery_history.append(point)
+        self.delivery_history.append([point[0], point[1], self.grid_id, point[2]])
