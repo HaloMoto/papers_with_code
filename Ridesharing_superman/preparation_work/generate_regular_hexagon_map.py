@@ -113,23 +113,23 @@ with open("../data/node.txt", "r") as file_to_read:
 
 ### 寻找距离每个锚点最近的两个十字路口 ###
 for grid in regl_Hexg_grids:
-    first_nearest = nodes[0]
-    second_nearest = nodes[0]
+    first_nearest = 0
+    second_nearest = 0
     first_distance = cal_distance(lon1=grid.anchor[0], lat1=grid.anchor[1], lon2=nodes[0][0], lat2=nodes[0][1]).twopoint_distance()
     second_distance = first_distance
-    for node in nodes:
-        distance = cal_distance(lon1=grid.anchor[0], lat1=grid.anchor[1], lon2=node[0], lat2=node[1]).twopoint_distance()
+    for i in range(len(nodes)):
+        distance = cal_distance(lon1=grid.anchor[0], lat1=grid.anchor[1], lon2=nodes[i][0], lat2=nodes[i][1]).twopoint_distance()
         if distance > second_distance:
             if distance > first_distance:
                 second_nearest = first_nearest
                 second_distance = first_distance
-                first_nearest = node
+                first_nearest = i
                 first_distance = distance
             else:
-                second_nearest = node
+                second_nearest = i
                 second_distance = distance
-    grid.nearest.append(first_nearest)
-    grid.nearest.append(second_nearest)
+    grid.nearest.append(first_nearest+1)
+    grid.nearest.append(second_nearest+1)
 
 ### 生成接载点cluster ###
 # cluster数目
@@ -521,23 +521,23 @@ for cluster in pickup_clusters:
 
 ### 计算距离区域锚点最近的两个十字路口 ###
 for cluster in pickup_clusters:
-    first_nearest = nodes[0]
-    second_nearest = nodes[0]
+    first_nearest = 0
+    second_nearest = 0
     first_distance = cal_distance(lon1=cluster.anchor[0], lat1=cluster.anchor[1], lon2=nodes[0][0], lat2=nodes[0][1]).twopoint_distance()
     second_distance = first_distance
-    for node in nodes:
-        distance = cal_distance(lon1=cluster.anchor[0], lat1=cluster.anchor[1], lon2=node[0], lat2=node[1]).twopoint_distance()
+    for i in range(len(nodes)):
+        distance = cal_distance(lon1=cluster.anchor[0], lat1=cluster.anchor[1], lon2=nodes[i][0], lat2=nodes[i][1]).twopoint_distance()
         if distance > second_distance:
             if distance > first_distance:
                 second_nearest = first_nearest
                 second_distance = first_distance
-                first_nearest = node
+                first_nearest = i
                 first_distance = distance
             else:
-                second_nearest = node
+                second_nearest = i
                 second_distance = distance
-    grid.nearest.append(first_nearest)
-    grid.nearest.append(second_nearest)
+    cluster.nearest.append(first_nearest+1)
+    cluster.nearest.append(second_nearest+1)
 
 ### 保存所有节点 ###
 # 十字路口数
@@ -565,6 +565,29 @@ for i in range(num_of_clusters):
 f.close()
 
 ### 保存所有的边 ###
+# 写的方式打开edge.txt文件
+f = open("../data/edge_all.txt","w")
+# 读取edge.txt文件里的内容，并保存入edge_all.txt文件
+with open("../data/edge.txt", "r") as file_to_read:
+    while True:
+        lines = file_to_read.readline()
+        if not lines:
+            break
+        start, end = [int(i) for i in lines.split(",")]
+        f.write(str(start) + ' ' + str(end) + '\n')
+# 写入距离格子锚点最近两个点的边
+for i in range(len(regl_Hexg_grids)):
+    f.write(str(num_of_intersections+i+1) + ' ' + str(regl_Hexg_grids[i].nearest[0]) + '\n')
+    f.write(str(regl_Hexg_grids[i].nearest[0]) + ' ' + str(num_of_intersections + i + 1) + '\n')
+    f.write(str(num_of_intersections+i+1) + ' ' + str(regl_Hexg_grids[i].nearest[1]) + '\n')
+    f.write(str(regl_Hexg_grids[i].nearest[1]) + ' ' + str(num_of_intersections + i + 1) + '\n')
+# 写入距离区域锚点最近两个点的边
+for i in range(len(pickup_clusters)):
+    f.write(str(num_of_intersections+num_of_grids+i+1) + ' ' + str(pickup_clusters[i].nearest[0]) + '\n')
+    f.write(str(pickup_clusters[i].nearest[0]) + ' ' + str(num_of_intersections+num_of_grids+i+1) + '\n')
+    f.write(str(num_of_intersections+num_of_grids+i+1) + ' ' + str(pickup_clusters[i].nearest[1]) + '\n')
+    f.write(str(pickup_clusters[i].nearest[1]) + ' ' + str(num_of_intersections+num_of_grids+i+1) + '\n')
+f.close()
 
 ### 计算所有的边长 ###
 
