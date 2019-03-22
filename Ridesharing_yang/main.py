@@ -137,8 +137,8 @@ while endtime <= Timeframe.untildatetime:
                 break
             continue
 
-    # Refresh the route of empty drivers
-    recommendation(driver_list)
+    # # Refresh the route of empty drivers
+    # recommendation(driver_list)
 
     # Refresh the location of drivers
     for driver in driver_list:
