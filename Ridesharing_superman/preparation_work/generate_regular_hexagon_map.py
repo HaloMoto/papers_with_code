@@ -11,6 +11,8 @@ import numpy as np
 from service.Auxiliary import coord2lonlat
 from bean.Cluster import Cluster
 from config.Timeframe import *
+from bean.Driver import Driver
+import sys
 
 # 定义正六边形数组
 regl_Hexg_grids = []
@@ -119,8 +121,8 @@ for grid in regl_Hexg_grids:
     second_distance = first_distance
     for i in range(len(nodes)):
         distance = cal_distance(lon1=grid.anchor[0], lat1=grid.anchor[1], lon2=nodes[i][0], lat2=nodes[i][1]).twopoint_distance()
-        if distance > second_distance:
-            if distance > first_distance:
+        if distance < second_distance:
+            if distance < first_distance:
                 second_nearest = first_nearest
                 second_distance = first_distance
                 first_nearest = i
@@ -527,8 +529,8 @@ for cluster in pickup_clusters:
     second_distance = first_distance
     for i in range(len(nodes)):
         distance = cal_distance(lon1=cluster.anchor[0], lat1=cluster.anchor[1], lon2=nodes[i][0], lat2=nodes[i][1]).twopoint_distance()
-        if distance > second_distance:
-            if distance > first_distance:
+        if distance < second_distance:
+            if distance < first_distance:
                 second_nearest = first_nearest
                 second_distance = first_distance
                 first_nearest = i
@@ -565,6 +567,8 @@ for i in range(num_of_clusters):
 f.close()
 
 ### 保存所有的边 ###
+# 总边数
+num_of_edges = 0
 # 写的方式打开edge.txt文件
 f = open("../data/edge_all.txt","w")
 # 读取edge.txt文件里的内容，并保存入edge_all.txt文件
@@ -575,26 +579,132 @@ with open("../data/edge.txt", "r") as file_to_read:
             break
         start, end = [int(i) for i in lines.split(",")]
         f.write(str(start) + ' ' + str(end) + '\n')
+        num_of_edges += 1
 # 写入距离格子锚点最近两个点的边
 for i in range(len(regl_Hexg_grids)):
     f.write(str(num_of_intersections+i+1) + ' ' + str(regl_Hexg_grids[i].nearest[0]) + '\n')
     f.write(str(regl_Hexg_grids[i].nearest[0]) + ' ' + str(num_of_intersections + i + 1) + '\n')
     f.write(str(num_of_intersections+i+1) + ' ' + str(regl_Hexg_grids[i].nearest[1]) + '\n')
     f.write(str(regl_Hexg_grids[i].nearest[1]) + ' ' + str(num_of_intersections + i + 1) + '\n')
+    num_of_edges += 4
 # 写入距离区域锚点最近两个点的边
 for i in range(len(pickup_clusters)):
     f.write(str(num_of_intersections+num_of_grids+i+1) + ' ' + str(pickup_clusters[i].nearest[0]) + '\n')
     f.write(str(pickup_clusters[i].nearest[0]) + ' ' + str(num_of_intersections+num_of_grids+i+1) + '\n')
     f.write(str(num_of_intersections+num_of_grids+i+1) + ' ' + str(pickup_clusters[i].nearest[1]) + '\n')
     f.write(str(pickup_clusters[i].nearest[1]) + ' ' + str(num_of_intersections+num_of_grids+i+1) + '\n')
+    num_of_edges += 4
 f.close()
 
 ### 计算所有的边长 ###
+# 读取node_all.txt文件里的所有内容
+nodes_all = []
+with open("../data/node_all.txt","r") as file_to_read:
+    # 从文件中读取十字路口数
+    num_of_intersections = int(file_to_read.readline())
+    # 从文件中读取格子数
+    num_of_grids = int(file_to_read.readline())
+    # 从文件中读取聚类数
+    num_of_clusters = int(file_to_read.readline())
+    while True:
+        lines = file_to_read.readline()
+        if not lines:
+            break
+        longitude, latitude, node_id = lines.split()
+        longitude = float(longitude)
+        latitude = float(latitude)
+        node_id = int(node_id)
+        nodes_all.append((longitude, latitude))
+# 保存所有边的长度进入文件edge_all_length.txt
+f = open("../data/edge_all_length.txt","w")
+f.write(str(num_of_intersections+num_of_grids+num_of_clusters) + '\n')
+f.write(str(num_of_edges) + '\n')
+with open("../data/edge_all.txt","r") as file_to_read:
+    while True:
+        lines = file_to_read.readline()
+        if not lines:
+            break
+        start, end = [int(i) for i in lines.split()]
+        distance_temp = cal_distance(lat1=nodes_all[start-1][1], lon1=nodes_all[start-1][0], lat2=nodes_all[end-1][1], lon2=nodes_all[end-1][0])
+        f.write(str(start) + ' ' + str(end) + ' ' + str(int(distance_temp.twopoint_distance())) + '\n')
+    f.close()
 
 ### 计算每条边经过所需要的时间 ###
-
 ### 保存所有点之间的最短路径 ###
-
 ### 将所有点到某个点的空间距离从近到远排列 ###
-
 ### 将所有点到某个点的时间距离从近到远排列 ###
+# 打开文件edge_all_length.txt
+try:
+    fil= open("../data/edge_all_length.txt","r")
+except IOError:
+    print("File not found.")
+    sys.exit(-1)
+# 点数
+V = int(fil.readline().strip())
+# 最短路径空间距离数组
+dist = []
+# 最短路径时间距离数组
+time = []
+# 最短路径数组
+parent = []
+# 边数
+E = int(fil.readline().strip())
+# 初始化无限距离
+for i in range(0, V):
+    dist.append([])
+    parent.append([])
+    time.append([])
+    for j in range(0, V):
+        dist[i].append(float("inf"))
+        time[i].append(float("inf"))
+        parent[i].append(0)
+# 从文件中读取边信息
+for i in range(0, E):
+    t = fil.readline().strip().split()
+    x = int(t[0]) - 1
+    y = int(t[1]) - 1
+    w = int(t[2])
+    dist[x][y] = w
+    parent[x][y] = x
+# 自反点的距离设为0
+for i in range(0, V):
+    dist[i][i] = 0
+# 初始化路径数组
+for i in range(0,V):
+    for j in range(0,V):
+        if dist[i][j] == float("inf"):
+            parent[i][j] = 0
+        else:
+            parent[i][j] = i
+# Floyd warshall算法
+for k in range(0,V):
+    for i in range(0,V):
+        for j in range(0,V):
+            if dist[i][j] > dist[i][k] + dist[k][j]:
+                dist[i][j] = dist[i][k] + dist[k][j]
+                parent[i][j] = parent[k][j]
+# 计算旅行时间
+for i in range(V):
+    for j in range(V):
+        time[i][j] = dist[i][j] / Driver.speed
+# 保存输出
+np.savetxt("../data/dist.txt", dist, fmt='%-3.0f')
+np.savetxt("../data/route.txt", parent, fmt='%-3d')
+np.savetxt("../data/time.txt", time, fmt='%-3.0f')
+fil.close()
+
+### 基于所有节点的紧密性给出节点的顺序 ###
+# 使用Floyd算法得到的dist.txt和time.txt矩阵
+D = np.loadtxt('../data/dist.txt')
+T = np.loadtxt('../data/time.txt')
+# 截取格子锚点之间的时空距离矩阵
+D = D[num_of_intersections:num_of_intersections+num_of_grids, num_of_intersections:num_of_intersections+num_of_grids]
+T = T[num_of_intersections:num_of_intersections+num_of_grids, num_of_intersections:num_of_intersections+num_of_grids]
+Gd = np.zeros([num_of_grids, num_of_grids])
+Gt = np.zeros([num_of_grids, num_of_grids])
+for i in range(1, num_of_grids+1):
+    Gd[i-1] = np.argsort(D[i-1], kind='quicksort', order=None)+1
+    Gt[i-1] = np.argsort(T[i-1], kind='quicksort', order=None)+1
+# 保存输出
+np.savetxt('../data/Gd.txt', Gd, fmt='%-3.0f')
+np.savetxt('../data/Gt.txt', Gt, fmt='%-3.0f')
