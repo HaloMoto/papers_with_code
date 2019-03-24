@@ -13,6 +13,7 @@ from bean.Cluster import Cluster
 from config.Timeframe import *
 from bean.Driver import Driver
 import sys
+import pickle
 
 # 定义正六边形数组
 regl_Hexg_grids = []
@@ -173,7 +174,7 @@ for i in range(len(labels)):
 
 ### 每个区域每天每个固定长的时间段的订单数分布 ###
 # 时间段长度,单位为分钟
-dt = 5
+dt = Cluster.dt
 # 模拟开始时间
 starttime1 = starttime
 # 模拟结束时间
@@ -182,7 +183,7 @@ endtime1 = untildatetime
 num_of_duration = (endtime1-starttime1).seconds / 60 / dt
 # 对时间段进行放大
 dt_enlarge = 24/num_of_duration
-# 统计每个区域每个时间段的订单数
+# 统计每个区域(pickup_clusters)每个时间段里接载点的订单数
 for cluster in pickup_clusters:
     # 每个区域保存时间段长度
     cluster.dt = dt
@@ -514,6 +515,338 @@ for cluster in pickup_clusters:
         record_12.append(sum)
     cluster.records.append(record_12)
 
+# 统计每个区域（delivery_clusters）每个时间段里传送点的订单数
+for cluster in delivery_clusters:
+    # 每个区域保存时间段长度
+    cluster.dt = dt
+    # 每个区域保存时间段数目
+    cluster.num_of_duration = num_of_duration
+    ## 保存该区域一月份的历史纪录 ##
+    statistic_1 = []
+    # 范围时间
+    d_time = datetime.datetime.strptime('2014-01-01', '%Y-%m-%d')
+    d_time1 = datetime.datetime.strptime('2014-01-31', '%Y-%m-%d')
+    # 遍历区域内所有的格子
+    for grid_id in cluster.grids_included:
+        # 遍历格子内所有记录,并将在约束条件内的点加入statistic_1
+        for point in regl_Hexg_grids[grid_id-1].delivery_history:
+            if point[3] >= d_time and point[3] <= d_time1:
+                statistic_1.append(point)
+    # 统计该区域在一月份不同时段的记录数
+    record_1 = []
+    for i in range(int(num_of_duration)):
+        # 范围时间
+        d_time = datetime.datetime.strptime('%d:00:00'%(dt_enlarge*i), '%H:%M:%S').time()
+        d_time1 = datetime.datetime.strptime('%d:59:59'%(dt_enlarge*(i+1)-1), '%H:%M:%S').time()
+        # 遍历statistic_1列表
+        sum = 0
+        # 统计特定时间段的数据
+        for point in statistic_1:
+            if point[3].time() >= d_time and point[3].time() <= d_time1:
+                sum += 1
+        # 将统计结果保存入record_1
+        record_1.append(sum)
+    cluster.records.append(record_1)
+
+    ## 保存该区域二月份的历史纪录 ##
+    statistic_2 = []
+    # 范围时间
+    d_time = datetime.datetime.strptime('2014-02-01', '%Y-%m-%d')
+    d_time1 = datetime.datetime.strptime('2014-02-28', '%Y-%m-%d')
+    # 遍历区域内所有的格子
+    for grid_id in cluster.grids_included:
+        # 遍历格子内所有记录,并将在约束条件内的点加入statistic_2
+        for point in regl_Hexg_grids[grid_id-1].delivery_history:
+            if point[3] >= d_time and point[3] <= d_time1:
+                statistic_2.append(point)
+    # 统计该区域在二月份不同时段的记录数
+    record_2 = []
+    for i in range(int(num_of_duration)):
+        # 范围时间
+        d_time = datetime.datetime.strptime('%d:00:00'%(dt_enlarge*i), '%H:%M:%S').time()
+        d_time1 = datetime.datetime.strptime('%d:59:59'%(dt_enlarge*(i+1)-1), '%H:%M:%S').time()
+        # 遍历statistic_2列表
+        sum = 0
+        # 统计特定时间段的数据
+        for point in statistic_2:
+            # print(point[3].time())
+            # print(d_time)
+            if point[3].time() >= d_time and point[3].time() <= d_time1:
+                sum += 1
+        # 将统计结果保存入record_2
+        record_2.append(sum)
+    cluster.records.append(record_2)
+
+    ## 保存该区域三月份的历史纪录 ##
+    statistic_3 = []
+    # 范围时间
+    d_time = datetime.datetime.strptime('2014-03-01', '%Y-%m-%d')
+    d_time1 = datetime.datetime.strptime('2014-03-31', '%Y-%m-%d')
+    # 遍历区域内所有的格子
+    for grid_id in cluster.grids_included:
+        # 遍历格子内所有记录,并将在约束条件内的点加入statistic_3
+        for point in regl_Hexg_grids[grid_id-1].delivery_history:
+            if point[3] >= d_time and point[3] <= d_time1:
+                statistic_3.append(point)
+    # 统计该区域在三月份不同时段的记录数
+    record_3 = []
+    for i in range(int(num_of_duration)):
+        # 范围时间
+        d_time = datetime.datetime.strptime('%d:00:00'%(dt_enlarge*i), '%H:%M:%S').time()
+        d_time1 = datetime.datetime.strptime('%d:59:59'%(dt_enlarge*(i+1)-1), '%H:%M:%S').time()
+        # 遍历statistic_1列表
+        sum = 0
+        # 统计特定时间段的数据
+        for point in statistic_3:
+            if point[3].time() >= d_time and point[3].time() <= d_time1:
+                sum += 1
+        # 将统计结果保存入record_3
+        record_3.append(sum)
+    cluster.records.append(record_3)
+
+    ## 保存该区域四月份的历史纪录 ##
+    statistic_4 = []
+    # 范围时间
+    d_time = datetime.datetime.strptime('2014-04-01', '%Y-%m-%d')
+    d_time1 = datetime.datetime.strptime('2014-04-30', '%Y-%m-%d')
+    # 遍历区域内所有的格子
+    for grid_id in cluster.grids_included:
+        # 遍历格子内所有记录,并将在约束条件内的点加入statistic_1
+        for point in regl_Hexg_grids[grid_id-1].delivery_history:
+            if point[3] >= d_time and point[3] <= d_time1:
+                statistic_4.append(point)
+    # 统计该区域在四月份不同时段的记录数
+    record_4 = []
+    for i in range(int(num_of_duration)):
+        # 范围时间
+        d_time = datetime.datetime.strptime('%d:00:00'%(dt_enlarge*i), '%H:%M:%S').time()
+        d_time1 = datetime.datetime.strptime('%d:59:59'%(dt_enlarge*(i+1)-1), '%H:%M:%S').time()
+        # 遍历statistic_4列表
+        sum = 0
+        # 统计特定时间段的数据
+        for point in statistic_4:
+            if point[3].time() >= d_time and point[3].time() <= d_time1:
+                sum += 1
+        # 将统计结果保存入record_4
+        record_4.append(sum)
+    cluster.records.append(record_4)
+
+    ## 保存该区域五月份的历史纪录 ##
+    statistic_5 = []
+    # 范围时间
+    d_time = datetime.datetime.strptime('2014-05-01', '%Y-%m-%d')
+    d_time1 = datetime.datetime.strptime('2014-05-31', '%Y-%m-%d')
+    # 遍历区域内所有的格子
+    for grid_id in cluster.grids_included:
+        # 遍历格子内所有记录,并将在约束条件内的点加入statistic_5
+        for point in regl_Hexg_grids[grid_id-1].delivery_history:
+            if point[3] >= d_time and point[3] <= d_time1:
+                statistic_5.append(point)
+    # 统计该区域在五月份不同时段的记录数
+    record_5 = []
+    for i in range(int(num_of_duration)):
+        # 范围时间
+        d_time = datetime.datetime.strptime('%d:00:00'%(dt_enlarge*i), '%H:%M:%S').time()
+        d_time1 = datetime.datetime.strptime('%d:59:59'%(dt_enlarge*(i+1)-1), '%H:%M:%S').time()
+        # 遍历statistic_5列表
+        sum = 0
+        # 统计特定时间段的数据
+        for point in statistic_5:
+            if point[3].time() >= d_time and point[3].time() <= d_time1:
+                sum += 1
+        # 将统计结果保存入record_5
+        record_5.append(sum)
+    cluster.records.append(record_5)
+
+    ## 保存该区域六月份的历史纪录 ##
+    statistic_6 = []
+    # 范围时间
+    d_time = datetime.datetime.strptime('2014-06-01', '%Y-%m-%d')
+    d_time1 = datetime.datetime.strptime('2014-06-30', '%Y-%m-%d')
+    # 遍历区域内所有的格子
+    for grid_id in cluster.grids_included:
+        # 遍历格子内所有记录,并将在约束条件内的点加入statistic_6
+        for point in regl_Hexg_grids[grid_id-1].delivery_history:
+            if point[3] >= d_time and point[3] <= d_time1:
+                statistic_6.append(point)
+    # 统计该区域在六月份不同时段的记录数
+    record_6 = []
+    for i in range(int(num_of_duration)):
+        # 范围时间
+        d_time = datetime.datetime.strptime('%d:00:00'%(dt_enlarge*i), '%H:%M:%S').time()
+        d_time1 = datetime.datetime.strptime('%d:59:59'%(dt_enlarge*(i+1)-1), '%H:%M:%S').time()
+        # 遍历statistic_6列表
+        sum = 0
+        # 统计特定时间段的数据
+        for point in statistic_6:
+            if point[3].time() >= d_time and point[3].time() <= d_time1:
+                sum += 1
+        # 将统计结果保存入record_6
+        record_6.append(sum)
+    cluster.records.append(record_6)
+
+    ## 保存该区域七月份的历史纪录 ##
+    statistic_7 = []
+    # 范围时间
+    d_time = datetime.datetime.strptime('2014-07-01', '%Y-%m-%d')
+    d_time1 = datetime.datetime.strptime('2014-07-31', '%Y-%m-%d')
+    # 遍历区域内所有的格子
+    for grid_id in cluster.grids_included:
+        # 遍历格子内所有记录,并将在约束条件内的点加入statistic_7
+        for point in regl_Hexg_grids[grid_id-1].delivery_history:
+            if point[3] >= d_time and point[3] <= d_time1:
+                statistic_7.append(point)
+    # 统计该区域在七月份不同时段的记录数
+    record_7 = []
+    for i in range(int(num_of_duration)):
+        # 范围时间
+        d_time = datetime.datetime.strptime('%d:00:00'%(dt_enlarge*i), '%H:%M:%S').time()
+        d_time1 = datetime.datetime.strptime('%d:59:59'%(dt_enlarge*(i+1)-1), '%H:%M:%S').time()
+        # 遍历statistic_7列表
+        sum = 0
+        # 统计特定时间段的数据
+        for point in statistic_7:
+            if point[3].time() >= d_time and point[3].time() <= d_time1:
+                sum += 1
+        # 将统计结果保存入record_7
+        record_7.append(sum)
+    cluster.records.append(record_7)
+
+    ## 保存该区域八月份的历史纪录 ##
+    statistic_8 = []
+    # 范围时间
+    d_time = datetime.datetime.strptime('2014-08-01', '%Y-%m-%d')
+    d_time1 = datetime.datetime.strptime('2014-08-31', '%Y-%m-%d')
+    # 遍历区域内所有的格子
+    for grid_id in cluster.grids_included:
+        # 遍历格子内所有记录,并将在约束条件内的点加入statistic_8
+        for point in regl_Hexg_grids[grid_id-1].delivery_history:
+            if point[3] >= d_time and point[3] <= d_time1:
+                statistic_8.append(point)
+    # 统计该区域在八月份不同时段的记录数
+    record_8 = []
+    for i in range(int(num_of_duration)):
+        # 范围时间
+        d_time = datetime.datetime.strptime('%d:00:00'%(dt_enlarge*i), '%H:%M:%S').time()
+        d_time1 = datetime.datetime.strptime('%d:59:59'%(dt_enlarge*(i+1)-1), '%H:%M:%S').time()
+        # 遍历statistic_8列表
+        sum = 0
+        # 统计特定时间段的数据
+        for point in statistic_8:
+            if point[3].time() >= d_time and point[3].time() <= d_time1:
+                sum += 1
+        # 将统计结果保存入record_8
+        record_8.append(sum)
+    cluster.records.append(record_8)
+
+    ## 保存该区域九月份的历史纪录 ##
+    statistic_9 = []
+    # 范围时间
+    d_time = datetime.datetime.strptime('2014-09-01', '%Y-%m-%d')
+    d_time1 = datetime.datetime.strptime('2014-09-30', '%Y-%m-%d')
+    # 遍历区域内所有的格子
+    for grid_id in cluster.grids_included:
+        # 遍历格子内所有记录,并将在约束条件内的点加入statistic_9
+        for point in regl_Hexg_grids[grid_id-1].delivery_history:
+            if point[3] >= d_time and point[3] <= d_time1:
+                statistic_9.append(point)
+    # 统计该区域在九月份不同时段的记录数
+    record_9 = []
+    for i in range(int(num_of_duration)):
+        # 范围时间
+        d_time = datetime.datetime.strptime('%d:00:00'%(dt_enlarge*i), '%H:%M:%S').time()
+        d_time1 = datetime.datetime.strptime('%d:59:59'%(dt_enlarge*(i+1)-1), '%H:%M:%S').time()
+        # 遍历statistic_9列表
+        sum = 0
+        # 统计特定时间段的数据
+        for point in statistic_9:
+            if point[3].time() >= d_time and point[3].time() <= d_time1:
+                sum += 1
+        # 将统计结果保存入record_9
+        record_9.append(sum)
+    cluster.records.append(record_9)
+
+    ## 保存该区域十月份的历史纪录 ##
+    statistic_10 = []
+    # 范围时间
+    d_time = datetime.datetime.strptime('2014-10-01', '%Y-%m-%d')
+    d_time1 = datetime.datetime.strptime('2014-10-31', '%Y-%m-%d')
+    # 遍历区域内所有的格子
+    for grid_id in cluster.grids_included:
+        # 遍历格子内所有记录,并将在约束条件内的点加入statistic_10
+        for point in regl_Hexg_grids[grid_id-1].delivery_history:
+            if point[3] >= d_time and point[3] <= d_time1:
+                statistic_10.append(point)
+    # 统计该区域在十月份不同时段的记录数
+    record_10 = []
+    for i in range(int(num_of_duration)):
+        # 范围时间
+        d_time = datetime.datetime.strptime('%d:00:00'%(dt_enlarge*i), '%H:%M:%S').time()
+        d_time1 = datetime.datetime.strptime('%d:59:59'%(dt_enlarge*(i+1)-1), '%H:%M:%S').time()
+        # 遍历statistic_10列表
+        sum = 0
+        # 统计特定时间段的数据
+        for point in statistic_10:
+            if point[3].time() >= d_time and point[3].time() <= d_time1:
+                sum += 1
+        # 将统计结果保存入record_10
+        record_10.append(sum)
+    cluster.records.append(record_10)
+
+    ## 保存该区域十一月份的历史纪录 ##
+    statistic_11 = []
+    # 范围时间
+    d_time = datetime.datetime.strptime('2014-11-01', '%Y-%m-%d')
+    d_time1 = datetime.datetime.strptime('2014-11-30', '%Y-%m-%d')
+    # 遍历区域内所有的格子
+    for grid_id in cluster.grids_included:
+        # 遍历格子内所有记录,并将在约束条件内的点加入statistic_11
+        for point in regl_Hexg_grids[grid_id-1].delivery_history:
+            if point[3] >= d_time and point[3] <= d_time1:
+                statistic_11.append(point)
+    # 统计该区域在十一月份不同时段的记录数
+    record_11 = []
+    for i in range(int(num_of_duration)):
+        # 范围时间
+        d_time = datetime.datetime.strptime('%d:00:00'%(dt_enlarge*i), '%H:%M:%S').time()
+        d_time1 = datetime.datetime.strptime('%d:59:59'%(dt_enlarge*(i+1)-1), '%H:%M:%S').time()
+        # 遍历statistic_11列表
+        sum = 0
+        # 统计特定时间段的数据
+        for point in statistic_11:
+            if point[3].time() >= d_time and point[3].time() <= d_time1:
+                sum += 1
+        # 将统计结果保存入record_11
+        record_11.append(sum)
+    cluster.records.append(record_11)
+
+    ## 保存该区域十二月份的历史纪录 ##
+    statistic_12 = []
+    # 范围时间
+    d_time = datetime.datetime.strptime('2014-12-01', '%Y-%m-%d')
+    d_time1 = datetime.datetime.strptime('2014-12-31', '%Y-%m-%d')
+    # 遍历区域内所有的格子
+    for grid_id in cluster.grids_included:
+        # 遍历格子内所有记录,并将在约束条件内的点加入statistic_12
+        for point in regl_Hexg_grids[grid_id-1].delivery_history:
+            if point[3] >= d_time and point[3] <= d_time1:
+                statistic_12.append(point)
+    # 统计该区域在十二月份不同时段的记录数
+    record_12 = []
+    for i in range(int(num_of_duration)):
+        # 范围时间
+        d_time = datetime.datetime.strptime('%d:00:00'%(dt_enlarge*i), '%H:%M:%S').time()
+        d_time1 = datetime.datetime.strptime('%d:59:59'%(dt_enlarge*(i+1)-1), '%H:%M:%S').time()
+        # 遍历statistic_12列表
+        sum = 0
+        # 统计特定时间段的数据
+        for point in statistic_12:
+            if point[3].time() >= d_time and point[3].time() <= d_time1:
+                sum += 1
+        # 将统计结果保存入record_12
+        record_12.append(sum)
+    cluster.records.append(record_12)
+
 ### 计算每个区域每个时间段的均值和方差 ###
 for cluster in pickup_clusters:
     cluster.avg_of_each_duration = np.mean(np.array(cluster.records), axis=0)
@@ -708,3 +1041,58 @@ for i in range(1, num_of_grids+1):
 # 保存输出
 np.savetxt('../data/Gd.txt', Gd, fmt='%-3.0f')
 np.savetxt('../data/Gt.txt', Gt, fmt='%-3.0f')
+
+### 保存格子数组 ###
+with open('../data/regl_Hexg_grids.txt', 'wb') as f:
+    pickle.dump(regl_Hexg_grids, f)
+
+### 保存区域数组 ###
+with open('../data/pickup_clusters.txt', 'wb') as f:
+    pickle.dump(pickup_clusters, f)
+with open('../data/delivery_clusters.txt', 'wb') as f:
+    pickle.dump(delivery_clusters, f)
+
+### 十字路口所属格子 ###
+nodes_belong_to_which_grid = dict()
+# 计算格子包含哪些十字路口
+for i in range(len(nodes)):
+    distance1 = cal_distance(lat1=nodes[i][1], lon1=nodes[i][0], lat2=nodes[i][1], lon2=LL[0])
+    distance2 = cal_distance(lat1=nodes[i][1], lon1=nodes[i][0], lat2=LL[1], lon2=nodes[i][0])
+    # 计算point在地图中的坐标
+    point_temp = (distance1.twopoint_distance(), distance2.twopoint_distance())
+    for grid in regl_Hexg_grids:
+        if grid.is_in_this_grid(point_temp):
+            grid.cross_points.append(i+1)
+            break
+# 格子锚点所属格子
+for i in range(len(regl_Hexg_grids)):
+    distance1 = cal_distance(lat1=regl_Hexg_grids[i].anchor[1], lon1=regl_Hexg_grids[i].anchor[0], lat2=regl_Hexg_grids[i].anchor[1], lon2=LL[0])
+    distance2 = cal_distance(lat1=regl_Hexg_grids[i].anchor[1], lon1=regl_Hexg_grids[i].anchor[0], lat2=LL[1], lon2=regl_Hexg_grids[i].anchor[0])
+    # 计算point在地图中的坐标
+    point_temp = (distance1.twopoint_distance(), distance2.twopoint_distance())
+    for grid in regl_Hexg_grids:
+        if grid.is_in_this_grid(point_temp):
+            grid.cross_points.append(num_of_intersections + i + 1)
+            break
+# 区域锚点所属格子
+for i in range(len(pickup_clusters)):
+    distance1 = cal_distance(lat1=pickup_clusters[i].anchor[1], lon1=pickup_clusters[i].anchor[0], lat2=pickup_clusters[i].anchor[1], lon2=LL[0])
+    distance2 = cal_distance(lat1=pickup_clusters[i].anchor[1], lon1=pickup_clusters[i].anchor[0], lat2=LL[1], lon2=pickup_clusters[i].anchor[0])
+    # 计算point在地图中的坐标
+    point_temp = (distance1.twopoint_distance(), distance2.twopoint_distance())
+    for grid in regl_Hexg_grids:
+        if grid.is_in_this_grid(point_temp):
+            grid.cross_points.append(num_of_intersections + num_of_grids + i + 1)
+            break
+# 计算十字路口所属格子字典
+for i in range(len(regl_Hexg_grids)):
+    for j in regl_Hexg_grids[i].cross_points:
+        nodes_belong_to_which_grid[j] = i+1
+# 保存该字典
+with open('../data/nodes_belong_to_which_grid.txt', 'wb') as f:
+    pickle.dump(nodes_belong_to_which_grid, f)
+
+### 位置查询 ###
+np.savetxt("../data/location_query.txt",nodes_all)
+# LQ = np.loadtxt('../data/location_query.txt')
+# print(LQ[0][0], LQ[0][1])

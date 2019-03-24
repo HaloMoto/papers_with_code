@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 class Cluster:
+    dt = 5
     def __init__(self, cluster_id):
         # 区域的标号
         self.cluster_id = cluster_id
@@ -21,4 +22,6 @@ class Cluster:
         self.records = []
         # 锚点相邻的十字路口
         self.nearest = []
+        # 订单列表
+        self.query_list = []
 

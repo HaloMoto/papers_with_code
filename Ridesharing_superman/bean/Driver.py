@@ -15,7 +15,7 @@ class Driver:
 
     def __init__(self, driver_id):
         # 司机当前位置，模拟过程中，随机分配
-        self.cur_location = random.randint(1,420)
+        self.cur_location = random.randint(1,430)
         # 司机id
         self.driver_id = driver_id
         # 车上已有乘客数

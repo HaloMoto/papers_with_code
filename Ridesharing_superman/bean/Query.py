@@ -6,7 +6,7 @@ import datetime
 import numpy as np
 
 class Query:
-    def __init__(self, query_id, pickup_location, current_time):
+    def __init__(self, query_id, pickup_location, delivery_location, current_time):
         # 订单id
         self.query_id = query_id
         # 订单状态？
@@ -14,7 +14,7 @@ class Query:
         # 订单接载点位置
         self.pickup_location = pickup_location
         # 订单传送点位置
-        self.delivery_location = random.randint(246, 420)
+        self.delivery_location = delivery_location
         # 订单生成时间
         self.generation_time = current_time
         # 最晚接载时间

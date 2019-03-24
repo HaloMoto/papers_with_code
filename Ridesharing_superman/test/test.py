@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+import random
 
 # 范围时间
 # d_time = datetime.datetime.strptime('2019-03-01', '%Y-%m-%d')
@@ -20,3 +21,5 @@ print(d_time)
 #     print("True")
 # else:
 #     print("False")
+
+print(random.random())
