@@ -4,12 +4,77 @@
 import numpy as np
 import datetime
 from service.Auxiliary import obtainPath
+from math import ceil
+from scipy.cluster.vq import kmeans2
 
 ## 文件载入 ##
 D = np.loadtxt('../data/dist.txt')
 T = np.loadtxt('../data/time.txt')
 Gt = np.loadtxt('../data/Gt.txt')
 Gd = np.loadtxt('../data/Gd.txt')
+LQ = np.loadtxt('../data/location_query.txt')
+
+with open("../data/node_all.txt","r") as file_to_read:
+    # 从文件中读取十字路口数
+    num_of_intersections = int(file_to_read.readline())
+    # 从文件中读取格子数
+    num_of_grids = int(file_to_read.readline())
+    # 从文件中读取聚类数
+    num_of_clusters = int(file_to_read.readline())
+
+## 拼单算法
+def combination_of_multiple_orders(query_list, regl_Hexi_grids):
+    ## 统计订单的传送点所在区域，并将统计结果保存入字典中
+    # 字典定义
+    dict_of_delivery_point_belongs_to = dict()
+    # 以区域id作为key，value为列表（保存订单）
+    for i in range(num_of_clusters):
+        dict_of_delivery_point_belongs_to[i+1] = []
+    for query in query_list:
+        for i in regl_Hexi_grids[query.delivery_location-num_of_intersections-1].delivery_cluster:
+            dict_of_delivery_point_belongs_to[i].append(query)
+    # 遍历字典
+    for key in dict_of_delivery_point_belongs_to.keys():
+        ## 首先将列表中已被服务的订单删除
+
+        if len(dict_of_delivery_point_belongs_to[key]) >= 2 and dict_of_delivery_point_belongs_to <= 4:
+            ## 将该订单列表合为一单
+            ## 寻找一辆距离最近的空车
+            ## 将合并的订单分配给司机
+            ## 改订单状态为已服务
+            pass
+        elif len(dict_of_delivery_point_belongs_to[key]) > 4:
+            while True:
+                # 使用二分K-Means算法，传入参数k
+                k = ceil(len(dict_of_delivery_point_belongs_to[key])/4)
+                # 将订单中传送点的经纬度地址保存到一个列表中
+                coordinates = []
+                for query in dict_of_delivery_point_belongs_to[key]:
+                    coordinates.append(LQ[query.delivery_location-1])
+                # 将coordinates列表转变为数组
+                coordinates = np.array(coordinates)
+                # 调用K-Means算法
+                centroid, labels = kmeans2(coordinates, k, iter=20, minit='points')
+                ## 获取分类结果
+                # 分类结果保存字典中
+                result_of_classifier = dict()
+                for i in range(k):
+                    result_of_classifier[i] = []
+                # 将分类结果进行保存
+                for i in range(len(labels)):
+                     result_of_classifier[labels[i]].append(dict_of_delivery_point_belongs_to[key][i])
+                # 遍历每个类别
+                for i in range(k):
+                    if len(result_of_classifier[i]) >= 2 and len(result_of_classifier[i]) <= 4:
+                        ## 组合成一单，分配一个司机
+                        pass
+                    elif len(result_of_classifier[i]) >= 5:
+                        # 分配多个司机
+                        num_of_drivers = ceil(len(result_of_classifier[i])/4)
+                        avg_each_driver = int(len(result_of_classifier[i])/4)
+                        ## 每个车平均avg_each_driver个订单拼成一单
+                        ## 然后将剩下的订单逐一分配给前面的拼单中
+                        ## 寻找num_of_drivers个司机
 
 ## 订单插入检查 ##
 def insertion_feasibility_check(query, driver, m, n, t_cur):

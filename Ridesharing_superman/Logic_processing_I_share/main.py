@@ -112,6 +112,9 @@ while endtime <= Timeframe.untildatetime:
             regl_Hexg_grids[nodes_belong_to_which_grid[node_will_pass] - 1].driver_will_coming.append(
                 [driver.driver_id, starttime+datetime.timedelta(seconds=T[driver.cur_location-1][node_will_pass-1])])
     ## 对每个格子里的driver_will_coming列表进行排序，按照时间从早到晚排列
+    for grid in regl_Hexg_grids:
+        # 按照时间升序
+        grid.driver_will_coming = sorted(grid.driver_will_coming, key=lambda driver: driver[1])
 
     ## 判断当前时间属于哪个时间段
     time_slot = (starttime - Timeframe.starttime).seconds / 60 / Cluster.dt + 1
@@ -177,6 +180,12 @@ while endtime <= Timeframe.untildatetime:
         cluster.query_list = [query for query in cluster.query_list if endtime > query.latest_pickup_time]
 
     ## 删除每个格子里的driver_will_coming列表中endtime之前的所有记录
+    for grid in regl_Hexg_grids:
+        while True:
+            if grid.driver_will_coming[0][1] <= endtime:
+                del grid.driver_will_coming[0]
+            else:
+                break
 
     ## 下一次循环
     starttime = endtime
