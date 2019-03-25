@@ -211,15 +211,48 @@ def find_the_nearest_empty_car(merged_order):
     pass
 
 ## 双边查询算法
-def dual_side_taxi_searching(driver_list, query, t_cur):
+def dual_side_taxi_searching(driver_list, regl_Hexi_grids, query, t_cur):
     # 订单接应点
     g_o = query.pickup_location
     # 接应点所在格子内的所有司机，并从这些司机中筛选出在pickup_latest_time之前到这个格子的司机
-
+    S_o = []
+    for driver_tuple in regl_Hexi_grids[query.pickup_location-num_of_intersections-1].driver_will_coming:
+        if driver_tuple[1] <= query.latest_pickup_time:
+            S_o.append(driver_list[int(driver_tuple[0])-1])
     # 订单传送点
     g_d = query.delivery_location
     # 传送点所在格子内的所有司机，并从这些司机中筛选出在delivery_latest_time之前到这个格子的司机
-
+    S_d = []
+    for driver_tuple in regl_Hexi_grids[query.delivery_location-num_of_intersections-1].driver_will_coming:
+        if driver_tuple[1] <= query.latest_delivery_time:
+            S_d.append(driver_list[int(driver_tuple[0])-1])
+    # S_o和S_d两个集合的交集
+    S_intersection = list(set(S_o).intersection(set(S_d)))
+    ## 将能在latest_pickup_time之前到达query.pickup_location所在格子的所有格子保存入一个列表中
+    l_o = []
+    for g_i in Gt[g_o-num_of_intersections-1]:
+        if t_cur + datetime.timedelta(seconds=T[g_o-1][int(g_i)+num_of_intersections-1]) <= query.latest_pickup_time:
+            l_o.append(g_i)
+        else:
+            break
+    ## 将能在latest_delivery_time之前到达query.delivery_location所在格子的所有格子保存入一个列表中
+    l_d = []
+    for g_j in Gt[g_d-num_of_intersections-1]:
+        if t_cur + datetime.timedelta(seconds=T[g_d-1][int(g_j)+num_of_intersections-1]) <= query.latest_delivery_time:
+            l_d.append(g_j)
+        else:
+            break
+    ## 一些判断标志
+    stop_o = False
+    stop_d = False
+    while not S_intersection and (stop_o == False or stop_d == False):
+        if l_o:
+            # 获得最近的一个格子
+            g_i = l_o.pop(0)
+            # 将格子中的司机取出来
+            for driver_tuple in regl_Hexi_grids[int(g_i) - 1].driver_will_coming:
+                if driver_tuple[1] <= query.latest_pickup_time:
+                    S_o.append(driver_list[int(driver_tuple[0]) - 1])
 
 ## 推荐算法
 def recommendation():
