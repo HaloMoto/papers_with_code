@@ -6,6 +6,7 @@ import datetime
 from service.Auxiliary import obtainPath
 from math import ceil
 from scipy.cluster.vq import kmeans2
+from functools import cmp_to_key
 
 ## 文件载入 ##
 D = np.loadtxt('../data/dist.txt')
@@ -207,8 +208,25 @@ def insertion_feasibility_check(query, driver, m, n, t_cur):
     return True
 
 ## 为合单寻找一辆空车
-def find_the_nearest_empty_car(merged_order):
-    pass
+def find_the_nearest_empty_car(regl_Hexi_grids, merged_order, driver_list, t_cur):
+    # 首先将merged_order中的订单按照latest_pickup_time进行排序
+    merged_order.sort(key=lambda query:query.latest_pickup_time)
+    # 遍历所有的订单
+    for query in merged_order:
+        # 订单接应点
+        g_o = query.pickup_location
+        # 接应点所在格子内的所有司机，并从这些司机中筛选出在latest_pickup_time之前到这个格子的空车司机
+        for driver_tuple in regl_Hexi_grids[g_o-num_of_intersections-1].driver_will_coming:
+            if driver_tuple[1] <= query.latest_pickup_time and driver_list[int(driver_tuple[0])-1].num_of_occupied_position == 0:
+                driver_found = driver_list[int(driver_tuple[0])-1]
+                ## 对空车司机进行路径规划
+
+                return True
+        # 将能在latest_pickup_time之前到达query.pickup_location所在格子的所有格子保存入一个列表中
+        l_o = []
+        for g_i in Gt[g_o-num_of_intersections-1]:
+            if t_cur + datetime.timedelta(seconds=T[g_o-1][int(g_i)+num_of_intersections-1]) <= query.latest_pickup_time:
+                
 
 ## 双边查询算法
 def dual_side_taxi_searching(driver_list, regl_Hexi_grids, query, t_cur):
@@ -253,6 +271,19 @@ def dual_side_taxi_searching(driver_list, regl_Hexi_grids, query, t_cur):
             for driver_tuple in regl_Hexi_grids[int(g_i) - 1].driver_will_coming:
                 if driver_tuple[1] <= query.latest_pickup_time:
                     S_o.append(driver_list[int(driver_tuple[0]) - 1])
+        else:
+            stop_o = True
+        if l_d:
+            # 获得最近的一个格子
+            g_j = l_d.pop(0)
+            # 将格子中的司机取出来
+            for driver_tuple in regl_Hexi_grids[int(g_j)-1].driver_will_coming:
+                if driver_tuple[1] <= query.latest_delivery_time:
+                    S_d.append(driver_list[int(driver_tuple[0])-1])
+        else:
+            stop_d = False
+        # 取交集
+        S_intersection = list(set(S_o).intersection(set(S_d)))
 
 ## 推荐算法
 def recommendation():

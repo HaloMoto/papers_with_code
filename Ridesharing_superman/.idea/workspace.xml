@@ -12,15 +12,15 @@
     <SUITE FILE_PATH="coverage/Ridesharing_superman$tool.coverage" NAME="tool Coverage Results" MODIFIED="1553216204826" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/dataprocess" />
     <SUITE FILE_PATH="coverage/Ridesharing_superman$generate_square_grid.coverage" NAME="generate_square_grid Coverage Results" MODIFIED="1553233623300" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/preparation_work" />
     <SUITE FILE_PATH="coverage/Ridesharing_superman$generate_regular_hexagon_map.coverage" NAME="generate_regular_hexagon_map Coverage Results" MODIFIED="1553398928025" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/preparation_work" />
-    <SUITE FILE_PATH="coverage/Ridesharing_superman$test.coverage" NAME="test Coverage Results" MODIFIED="1553500275329" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/Ridesharing_superman$test.coverage" NAME="test Coverage Results" MODIFIED="1553517484850" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/service/I_Share_Algorithm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="479">
-              <caret line="254" column="69" lean-forward="true" selection-start-line="254" selection-start-column="69" selection-end-line="254" selection-end-column="69" />
+            <state relative-caret-position="378">
+              <caret line="228" column="16" selection-start-line="228" selection-start-column="16" selection-end-line="228" selection-end-column="16" />
               <folding>
                 <element signature="e#48#66#0" expanded="true" />
               </folding>
@@ -31,11 +31,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="371">
-              <caret line="24" column="22" lean-forward="true" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
+            <state relative-caret-position="344">
+              <caret line="27" column="14" lean-forward="true" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
               <folding>
                 <element signature="e#48#63#0" expanded="true" />
-                <marker date="1553500275306" expanded="true" signature="88:214" ph="..." />
+                <marker date="1553517484827" expanded="true" signature="88:214" ph="..." />
               </folding>
             </state>
           </provider>
@@ -50,7 +50,7 @@
         <entry file="file://$PROJECT_DIR$/Logic_processing_I_share/main.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="176">
-              <caret line="104" column="25" selection-start-line="104" selection-start-column="14" selection-end-line="104" selection-end-column="25" />
+              <caret line="113" column="38" selection-start-line="113" selection-start-column="36" selection-end-line="113" selection-end-column="38" />
               <folding>
                 <element signature="e#43#79#0" expanded="true" />
               </folding>
@@ -105,7 +105,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bean/Driver.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3348">
+            <state relative-caret-position="3098">
               <caret line="127" selection-start-line="127" selection-end-line="127" />
               <folding>
                 <element signature="e#43#56#0" expanded="true" />
@@ -143,6 +143,7 @@
       <find>kmeans2</find>
       <find>nodes_all</find>
       <find>driver_will</find>
+      <find>排序</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -389,12 +390,12 @@
       <option name="presentableId" value="Default" />
       <updated>1552962965023</updated>
       <workItem from="1552962989098" duration="125200000" />
-      <workItem from="1553497586230" duration="7954000" />
+      <workItem from="1553497586230" duration="11511000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="133154000" />
+    <option name="totallyTimeSpent" value="136711000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -620,31 +621,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bean/Driver.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3348">
-          <caret line="127" selection-start-line="127" selection-end-line="127" />
-          <folding>
-            <element signature="e#43#56#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bean/Query.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="821">
           <caret line="38" selection-start-line="38" selection-end-line="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="371">
-          <caret line="24" column="22" lean-forward="true" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
-          <folding>
-            <element signature="e#48#63#0" expanded="true" />
-            <marker date="1553500275306" expanded="true" signature="88:214" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -655,20 +635,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/test/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="344">
+          <caret line="27" column="14" lean-forward="true" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+          <folding>
+            <element signature="e#48#63#0" expanded="true" />
+            <marker date="1553517484827" expanded="true" signature="88:214" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Logic_processing_I_share/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
-          <caret line="104" column="25" selection-start-line="104" selection-start-column="14" selection-end-line="104" selection-end-column="25" />
+          <caret line="113" column="38" selection-start-line="113" selection-start-column="36" selection-end-line="113" selection-end-column="38" />
           <folding>
             <element signature="e#43#79#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/bean/Driver.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3098">
+          <caret line="127" selection-start-line="127" selection-end-line="127" />
+          <folding>
+            <element signature="e#43#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/service/I_Share_Algorithm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="479">
-          <caret line="254" column="69" lean-forward="true" selection-start-line="254" selection-start-column="69" selection-end-line="254" selection-end-column="69" />
+        <state relative-caret-position="378">
+          <caret line="228" column="16" selection-start-line="228" selection-start-column="16" selection-end-line="228" selection-end-column="16" />
           <folding>
             <element signature="e#48#66#0" expanded="true" />
           </folding>
