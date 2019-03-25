@@ -25,7 +25,7 @@ def dual_side_search(driver_list, query, t_cur):
     S_o.sort(key=cmp_to_key(
         lambda driver1, driver2: D[g_o - 1][driver1.cur_location - 1] - D[g_o - 1][driver2.cur_location - 1]))
     # print(S_o)
-    g_d = query.pickup_location
+    g_d = query.delivery_location
     S_d = list(filter(lambda driver: t_cur + datetime.timedelta(seconds=T[g_d - 1][driver.cur_location - 1]) <= query.latest_delivery_time and driver.num_of_occupied_position < 4, driver_list))
     S_d.sort(key=cmp_to_key(lambda driver1, driver2: D[g_d - 1][driver1.cur_location - 1] - D[g_d - 1][driver2.cur_location - 1]))
     # print(S_d)

@@ -23,3 +23,8 @@ print(d_time)
 #     print("False")
 
 print(random.random())
+
+d = dict()
+d[1] = [1,2,3]
+d[3] = [2,3,4,5,6]
+print(d[3][3])

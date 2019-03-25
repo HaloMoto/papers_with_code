@@ -36,13 +36,18 @@ def combination_of_multiple_orders(query_list, regl_Hexi_grids):
     # 遍历字典
     for key in dict_of_delivery_point_belongs_to.keys():
         ## 首先将列表中已被服务的订单删除
-
+        dict_of_delivery_point_belongs_to[key] = [query for query in dict_of_delivery_point_belongs_to[key] if query.condition == 0]
         if len(dict_of_delivery_point_belongs_to[key]) >= 2 and dict_of_delivery_point_belongs_to <= 4:
             ## 将该订单列表合为一单
+            merged_order = dict_of_delivery_point_belongs_to[key]
             ## 寻找一辆距离最近的空车
             ## 将合并的订单分配给司机
-            ## 改订单状态为已服务
-            pass
+            # 调用搜索车辆算法，返回成功 与否状态
+            is_successful = find_the_nearest_empty_car(merged_order)
+            ## 如果找到了空车，那么改订单状态为已服务
+            if is_successful:
+                for query in dict_of_delivery_point_belongs_to[key]:
+                    query.condition = 1
         elif len(dict_of_delivery_point_belongs_to[key]) > 4:
             while True:
                 # 使用二分K-Means算法，传入参数k
@@ -67,14 +72,38 @@ def combination_of_multiple_orders(query_list, regl_Hexi_grids):
                 for i in range(k):
                     if len(result_of_classifier[i]) >= 2 and len(result_of_classifier[i]) <= 4:
                         ## 组合成一单，分配一个司机
-                        pass
+                        ## 将该订单列表合为一单
+                        merged_order = result_of_classifier[i]
+                        ## 寻找一辆距离最近的空车
+                        ## 将合并的订单分配给司机
+                        # 调用搜索车辆算法，返回成功 与否状态
+                        is_successful = find_the_nearest_empty_car(merged_order)
+                        ## 如果找到了空车，那么改订单状态为已服务
+                        if is_successful:
+                            for query in result_of_classifier[i]:
+                                query.condition = 1
                     elif len(result_of_classifier[i]) >= 5:
                         # 分配多个司机
                         num_of_drivers = ceil(len(result_of_classifier[i])/4)
-                        avg_each_driver = int(len(result_of_classifier[i])/4)
+                        ## avg_each_driver = int(len(result_of_classifier[i])/4)
                         ## 每个车平均avg_each_driver个订单拼成一单
                         ## 然后将剩下的订单逐一分配给前面的拼单中
                         ## 寻找num_of_drivers个司机
+                        merged_orders = dict()
+                        for j in range(num_of_drivers):
+                            merged_orders[j] = []
+                        for j in range(len(result_of_classifier[i])):
+                            merged_orders[j % num_of_drivers].append(result_of_classifier[i][j])
+                        ## 给每个合单分配司机
+                        for j in range(num_of_drivers):
+                            ## 寻找一辆距离最近的空车
+                            ## 将合并的订单分配给司机
+                            # 调用搜索车辆算法，返回成功 与否状态
+                            is_successful = find_the_nearest_empty_car(merged_orders[j])
+                            ## 如果找到了空车，那么改订单状态为已服务
+                            if is_successful:
+                                for query in merged_orders[j]:
+                                    query.condition = 1
 
 ## 订单插入检查 ##
 def insertion_feasibility_check(query, driver, m, n, t_cur):
@@ -176,3 +205,22 @@ def insertion_feasibility_check(query, driver, m, n, t_cur):
         driver.assist_t = -abs(driver.assist_t)
 
     return True
+
+## 为合单寻找一辆空车
+def find_the_nearest_empty_car(merged_order):
+    pass
+
+## 双边查询算法
+def dual_side_taxi_searching(driver_list, query, t_cur):
+    # 订单接应点
+    g_o = query.pickup_location
+    # 接应点所在格子内的所有司机，并从这些司机中筛选出在pickup_latest_time之前到这个格子的司机
+
+    # 订单传送点
+    g_d = query.delivery_location
+    # 传送点所在格子内的所有司机，并从这些司机中筛选出在delivery_latest_time之前到这个格子的司机
+
+
+## 推荐算法
+def recommendation():
+    pass
