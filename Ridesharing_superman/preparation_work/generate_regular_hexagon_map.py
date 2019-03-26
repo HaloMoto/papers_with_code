@@ -1026,7 +1026,7 @@ np.savetxt("../data/route.txt", parent, fmt='%-3d')
 np.savetxt("../data/time.txt", time, fmt='%-3.0f')
 fil.close()
 
-### 基于所有节点的紧密性给出节点的顺序 ###
+### 基于所有格子的紧密性给出节点的顺序 ###
 # 使用Floyd算法得到的dist.txt和time.txt矩阵
 D = np.loadtxt('../data/dist.txt')
 T = np.loadtxt('../data/time.txt')
@@ -1041,6 +1041,22 @@ for i in range(1, num_of_grids+1):
 # 保存输出
 np.savetxt('../data/Gd.txt', Gd, fmt='%-3.0f')
 np.savetxt('../data/Gt.txt', Gt, fmt='%-3.0f')
+
+### 基于所有区域的紧密性给出节点的顺序 ###
+# 使用Floyd算法得到的dist.txt和time.txt矩阵
+D = np.loadtxt('../data/dist.txt')
+T = np.loadtxt('../data/time.txt')
+# 截取格子锚点之间的时空距离矩阵
+D = D[num_of_intersections+num_of_grids:num_of_intersections+num_of_grids+num_of_clusters, num_of_intersections+num_of_grids:num_of_intersections+num_of_grids+num_of_clusters]
+T = T[num_of_intersections+num_of_grids:num_of_intersections+num_of_grids+num_of_clusters, num_of_intersections+num_of_grids:num_of_intersections+num_of_grids+num_of_clusters]
+Gd = np.zeros([num_of_clusters, num_of_clusters])
+Gt = np.zeros([num_of_clusters, num_of_clusters])
+for i in range(1, num_of_clusters+1):
+    Gd[i-1] = np.argsort(D[i-1], kind='quicksort', order=None)+1
+    Gt[i-1] = np.argsort(T[i-1], kind='quicksort', order=None)+1
+# 保存输出
+np.savetxt('../data/Gd_c.txt', Gd, fmt='%-3.0f')
+np.savetxt('../data/Gt_c.txt', Gt, fmt='%-3.0f')
 
 ### 保存格子数组 ###
 with open('../data/regl_Hexg_grids.txt', 'wb') as f:

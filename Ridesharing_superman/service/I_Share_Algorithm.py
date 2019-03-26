@@ -7,6 +7,8 @@ from service.Auxiliary import obtainPath
 from math import ceil
 from scipy.cluster.vq import kmeans2
 from functools import cmp_to_key
+import config.Timeframe as Timeframe
+from bean.Cluster import Cluster
 
 ## 文件载入 ##
 D = np.loadtxt('../data/dist.txt')
@@ -24,7 +26,7 @@ with open("../data/node_all.txt","r") as file_to_read:
     num_of_clusters = int(file_to_read.readline())
 
 ## 拼单算法
-def combination_of_multiple_orders(query_list, regl_Hexi_grids):
+def combination_of_multiple_orders(query_list, regl_Hexi_grids, driver_list, t_cur):
     ## 统计订单的传送点所在区域，并将统计结果保存入字典中
     # 字典定义
     dict_of_delivery_point_belongs_to = dict()
@@ -44,7 +46,7 @@ def combination_of_multiple_orders(query_list, regl_Hexi_grids):
             ## 寻找一辆距离最近的空车
             ## 将合并的订单分配给司机
             # 调用搜索车辆算法，返回成功 与否状态
-            is_successful = find_the_nearest_empty_car(merged_order)
+            is_successful = find_the_nearest_empty_car_for_many(regl_Hexi_grids, merged_order, driver_list, t_cur)
             ## 如果找到了空车，那么改订单状态为已服务
             if is_successful:
                 for query in dict_of_delivery_point_belongs_to[key]:
@@ -78,7 +80,7 @@ def combination_of_multiple_orders(query_list, regl_Hexi_grids):
                         ## 寻找一辆距离最近的空车
                         ## 将合并的订单分配给司机
                         # 调用搜索车辆算法，返回成功 与否状态
-                        is_successful = find_the_nearest_empty_car(merged_order)
+                        is_successful = find_the_nearest_empty_car_for_many(regl_Hexi_grids, merged_order, driver_list, t_cur)
                         ## 如果找到了空车，那么改订单状态为已服务
                         if is_successful:
                             for query in result_of_classifier[i]:
@@ -100,7 +102,7 @@ def combination_of_multiple_orders(query_list, regl_Hexi_grids):
                             ## 寻找一辆距离最近的空车
                             ## 将合并的订单分配给司机
                             # 调用搜索车辆算法，返回成功 与否状态
-                            is_successful = find_the_nearest_empty_car(merged_orders[j])
+                            is_successful = find_the_nearest_empty_car_for_many(regl_Hexi_grids, merged_orders[j], driver_list, t_cur)
                             ## 如果找到了空车，那么改订单状态为已服务
                             if is_successful:
                                 for query in merged_orders[j]:
@@ -208,25 +210,73 @@ def insertion_feasibility_check(query, driver, m, n, t_cur):
     return True
 
 ## 为合单寻找一辆空车
-def find_the_nearest_empty_car(regl_Hexi_grids, merged_order, driver_list, t_cur):
-    # 首先将merged_order中的订单按照latest_pickup_time进行排序
+def find_the_nearest_empty_car_for_many(regl_Hexi_grids, merged_order, driver_list, t_cur):
+    # 找出latest_pickup_time最小的订单
     merged_order.sort(key=lambda query:query.latest_pickup_time)
-    # 遍历所有的订单
-    for query in merged_order:
-        # 订单接应点
-        g_o = query.pickup_location
-        # 接应点所在格子内的所有司机，并从这些司机中筛选出在latest_pickup_time之前到这个格子的空车司机
-        for driver_tuple in regl_Hexi_grids[g_o-num_of_intersections-1].driver_will_coming:
-            if driver_tuple[1] <= query.latest_pickup_time and driver_list[int(driver_tuple[0])-1].num_of_occupied_position == 0:
-                driver_found = driver_list[int(driver_tuple[0])-1]
-                ## 对空车司机进行路径规划
-
-                return True
-        # 将能在latest_pickup_time之前到达query.pickup_location所在格子的所有格子保存入一个列表中
-        l_o = []
-        for g_i in Gt[g_o-num_of_intersections-1]:
-            if t_cur + datetime.timedelta(seconds=T[g_o-1][int(g_i)+num_of_intersections-1]) <= query.latest_pickup_time:
-                
+    # 为合单的每一个订单的接载点初始化一个保存格子的字典集合
+    L_os = dict()
+    for i in range(len(merged_order)):
+        L_os[i] = []
+    # 寻找距离所有订单所在格子最近的格子
+    for i in range(len(merged_order)):
+        for g_i in Gt[merged_order[i].pickup_location-num_of_intersections-1]:
+            if t_cur + datetime.timedelta(
+                    seconds=T[merged_order[i].pickup_location - 1][int(g_i) + num_of_intersections - 1]) <= merged_order[i].latest_pickup_time:
+                L_os[i].append(g_i)
+            else:
+                break
+    # 求多个list的交集
+    # 初始化交集列表
+    S_intersection = [grid for grid in L_os[0] if grid in L_os[1]]
+    for i in range(2, len(merged_order)):
+        S_intersection = [grid for grid in S_intersection if grid in L_os[i]]
+    ## 判断集合是否为空
+    if S_intersection:
+        return False
+    else:
+        # 集合不为空，从集合中选出格子，然后从格子中找出空车司机
+        for grid in S_intersection:
+            for driver_tuple in regl_Hexi_grids[grid-1].driver_will_coming:
+                if driver_list[driver_tuple[0]].num_of_occupied_position == 0 and driver_list[driver_tuple[1]] < merged_order[0].latest_pickup_time:
+                    ## 找到空车司机
+                    #进行路径规划
+                    merged_order.sort(key=cmp_to_key(lambda query_1, query_2: D[grid + num_of_intersections - 1][query_1.pickup_location - 1] - D[grid + num_of_intersections - 1][query_2.pickup_location - 1]))
+                    # 将订单中的接应点加入到司机安排中
+                    for query in merged_order:
+                        driver_list[driver_tuple[0]].cur_schedule.append([query.pickup_location, query.latest_pickup_time, 0])
+                    ## 将订单根据接应点进行排序
+                    merged_order.sort(key=cmp_to_key(
+                        lambda query_1, query_2: D[grid + num_of_intersections - 1][query_1.delivery_location - 1] -
+                                                 D[grid + num_of_intersections - 1][query_2.delivery_location - 1]))
+                    # 将订单中的接应点加入到司机安排中
+                    for query in merged_order:
+                        driver_list[driver_tuple[0]].cur_schedule.append(
+                            [query.delivery_location, query.latest_delivery_time, 1])
+                    # 路径规划
+                    # 乘客加len(merged_order)
+                    driver_list[driver_tuple[0]].add_passenger(len(merged_order))
+                    # 原来路径的第一个点
+                    first_location_origin_route = driver_list[driver_tuple[0]].route[0]
+                    # Recalculate route after schedule change
+                    driver_list[driver_tuple[0]].route = []
+                    driver_list[driver_tuple[0]].route.extend(
+                        (str(driver_list[driver_tuple[0]].cur_location) + obtainPath(
+                            driver_list[driver_tuple[0]].cur_location - 1, driver_list[driver_tuple[0]].cur_schedule[0][0] - 1) + str(
+                            driver_list[driver_tuple[0]].cur_schedule[0][0])).split())
+                    for i in range(len(driver_list[driver_tuple[0]].cur_schedule) - 1):
+                        driver_list[driver_tuple[0]].route.extend(
+                            (obtainPath(
+                                driver_list[driver_tuple[0]].cur_schedule[i][0] - 1, driver_list[driver_tuple[0]].cur_schedule[i + 1][0] - 1) + str(
+                                driver_list[driver_tuple[0]].cur_schedule[i + 1][0])).split())
+                    del driver_list[driver_tuple[0]].route[0]
+                    # 如果调整之后的路径第一个点和原始路径第一个点相同
+                    if driver_list[driver_tuple[0]].route[0] == first_location_origin_route:
+                        driver_list[driver_tuple[0]].assist_t = driver_list[driver_tuple[0]].assist_t
+                    else:
+                        driver_list[driver_tuple[0]].assist_t = -abs(driver_list[driver_tuple[0]].assist_t)
+                    #返回True
+                    return True
+    return False
 
 ## 双边查询算法
 def dual_side_taxi_searching(driver_list, regl_Hexi_grids, query, t_cur):
@@ -235,14 +285,14 @@ def dual_side_taxi_searching(driver_list, regl_Hexi_grids, query, t_cur):
     # 接应点所在格子内的所有司机，并从这些司机中筛选出在pickup_latest_time之前到这个格子的司机
     S_o = []
     for driver_tuple in regl_Hexi_grids[query.pickup_location-num_of_intersections-1].driver_will_coming:
-        if driver_tuple[1] <= query.latest_pickup_time:
+        if driver_tuple[1] <= query.latest_pickup_time and driver_list[driver_tuple[0]].num_of_occupied_position != 0:
             S_o.append(driver_list[int(driver_tuple[0])-1])
     # 订单传送点
     g_d = query.delivery_location
-    # 传送点所在格子内的所有司机，并从这些司机中筛选出在delivery_latest_time之前到这个格子的司机
+    # 传送点所在格子内的所有司机，并从这些司机中筛选出在delivery_latest_time之前到这个格子且车上乘客数不为0的司机
     S_d = []
     for driver_tuple in regl_Hexi_grids[query.delivery_location-num_of_intersections-1].driver_will_coming:
-        if driver_tuple[1] <= query.latest_delivery_time:
+        if driver_tuple[1] <= query.latest_delivery_time and driver_list[driver_tuple[0]].num_of_occupied_position != 0:
             S_d.append(driver_list[int(driver_tuple[0])-1])
     # S_o和S_d两个集合的交集
     S_intersection = list(set(S_o).intersection(set(S_d)))
@@ -269,7 +319,7 @@ def dual_side_taxi_searching(driver_list, regl_Hexi_grids, query, t_cur):
             g_i = l_o.pop(0)
             # 将格子中的司机取出来
             for driver_tuple in regl_Hexi_grids[int(g_i) - 1].driver_will_coming:
-                if driver_tuple[1] <= query.latest_pickup_time:
+                if driver_tuple[1] <= query.latest_pickup_time and driver_list[driver_tuple[0]].num_of_occupied_position != 0:
                     S_o.append(driver_list[int(driver_tuple[0]) - 1])
         else:
             stop_o = True
@@ -278,13 +328,119 @@ def dual_side_taxi_searching(driver_list, regl_Hexi_grids, query, t_cur):
             g_j = l_d.pop(0)
             # 将格子中的司机取出来
             for driver_tuple in regl_Hexi_grids[int(g_j)-1].driver_will_coming:
-                if driver_tuple[1] <= query.latest_delivery_time:
+                if driver_tuple[1] <= query.latest_delivery_time and driver_list[driver_tuple[0]].num_of_occupied_position != 0:
                     S_d.append(driver_list[int(driver_tuple[0])-1])
         else:
             stop_d = False
         # 取交集
         S_intersection = list(set(S_o).intersection(set(S_d)))
+    ## 遍历查询结果
+    for j in range(len(S_intersection)):
+        for m in range(1, int(len(S_intersection[j].cur_schedule))+1):
+            for n in range(m, int(len(S_intersection[j].cur_schedule))+2):
+                if insertion_feasibility_check(query, S_intersection[j], m, n, t_cur):
+                    # 插入成功，改变订单状态为已服务
+                    query.condition = 1
+                    # 司机接的订单数加一
+                    S_intersection[j].number_of_order += 1
+                    break
+            else:
+                continue
+            break
+        else:
+            continue
+        break
 
 ## 推荐算法
-def recommendation():
-    pass
+def recommendation(driver_list, pickup_clusters, t_cur):
+    ## 给空车司机推荐路径
+    for driver in driver_list:
+        if driver.num_of_occupied_position == 0:
+            ## 最大接客概率以及区域id
+            P_max = 0
+            cluster_id = 0
+            ## 初始化变量
+            # 判断当前时间属于哪个时间段
+            time_slot = (t_cur - Timeframe.starttime).seconds / 60 / Cluster.dt + 1
+            ##
+
+
+## 为一单寻找一个空车司机
+def find_the_nearest_empty_car_for_one(query, driver_list, regl_Hexi_grids, t_cur):
+    ## 在订单的接载点所在格子寻找空车
+    g_o = query.pickup_location
+    # 接应点所在格子内的所有司机，并从这些司机中找出在pickup_latest_time之前到这个格子的空车司机
+    for driver_tuple in regl_Hexi_grids[query.pickup_location - num_of_intersections - 1].driver_will_coming:
+        if driver_tuple[1] <= query.latest_pickup_time and driver_list[driver_tuple[0]].num_of_occupied_position == 0:
+            # 进行路径规划
+            driver_list[driver_tuple[0]].schedule.append([query.pickup_location,query.latest_pickup_time,0])
+            driver_list[driver_tuple[0]].schedule.append([query.delivery_location,query.latest_delivery_time,1])
+            # 路径规划
+            # 乘客加len(merged_order)
+            driver_list[driver_tuple[0]].add_passenger(1)
+            # 原来路径的第一个点
+            first_location_origin_route = driver_list[driver_tuple[0]].route[0]
+            # Recalculate route after schedule change
+            driver_list[driver_tuple[0]].route = []
+            driver_list[driver_tuple[0]].route.extend(
+                (str(driver_list[driver_tuple[0]].cur_location) + obtainPath(
+                    driver_list[driver_tuple[0]].cur_location - 1,
+                    driver_list[driver_tuple[0]].cur_schedule[0][0] - 1) + str(
+                    driver_list[driver_tuple[0]].cur_schedule[0][0])).split())
+            for i in range(len(driver_list[driver_tuple[0]].cur_schedule) - 1):
+                driver_list[driver_tuple[0]].route.extend(
+                    (obtainPath(
+                        driver_list[driver_tuple[0]].cur_schedule[i][0] - 1,
+                        driver_list[driver_tuple[0]].cur_schedule[i + 1][0] - 1) + str(
+                        driver_list[driver_tuple[0]].cur_schedule[i + 1][0])).split())
+            del driver_list[driver_tuple[0]].route[0]
+            # 如果调整之后的路径第一个点和原始路径第一个点相同
+            if driver_list[driver_tuple[0]].route[0] == first_location_origin_route:
+                driver_list[driver_tuple[0]].assist_t = driver_list[driver_tuple[0]].assist_t
+            else:
+                driver_list[driver_tuple[0]].assist_t = -abs(driver_list[driver_tuple[0]].assist_t)
+            # 成功返回True
+            return True
+    ## 将能在latest_pickup_time之前到达query.pickup_location所在格子的所有格子保存入一个列表中
+    l_o = []
+    for g_i in Gt[g_o - num_of_intersections - 1]:
+        if t_cur + datetime.timedelta(
+                seconds=T[g_o - 1][int(g_i) + num_of_intersections - 1]) <= query.latest_pickup_time:
+            l_o.append(g_i)
+        else:
+            break
+    ## 遍历列表l_o从中找到一个
+    for g_i in l_o:
+        # 将格子中的司机取出来
+        for driver_tuple in regl_Hexi_grids[int(g_i) - 1].driver_will_coming:
+            if driver_tuple[1] <= query.latest_pickup_time and driver_list[driver_tuple[0]].num_of_occupied_position == 0:
+                # 进行路径规划
+                driver_list[driver_tuple[0]].schedule.append([query.pickup_location, query.latest_pickup_time, 0])
+                driver_list[driver_tuple[0]].schedule.append([query.delivery_location, query.latest_delivery_time, 1])
+                # 路径规划
+                # 乘客加len(merged_order)
+                driver_list[driver_tuple[0]].add_passenger(1)
+                # 原来路径的第一个点
+                first_location_origin_route = driver_list[driver_tuple[0]].route[0]
+                # Recalculate route after schedule change
+                driver_list[driver_tuple[0]].route = []
+                driver_list[driver_tuple[0]].route.extend(
+                    (str(driver_list[driver_tuple[0]].cur_location) + obtainPath(
+                        driver_list[driver_tuple[0]].cur_location - 1,
+                        driver_list[driver_tuple[0]].cur_schedule[0][0] - 1) + str(
+                        driver_list[driver_tuple[0]].cur_schedule[0][0])).split())
+                for i in range(len(driver_list[driver_tuple[0]].cur_schedule) - 1):
+                    driver_list[driver_tuple[0]].route.extend(
+                        (obtainPath(
+                            driver_list[driver_tuple[0]].cur_schedule[i][0] - 1,
+                            driver_list[driver_tuple[0]].cur_schedule[i + 1][0] - 1) + str(
+                            driver_list[driver_tuple[0]].cur_schedule[i + 1][0])).split())
+                del driver_list[driver_tuple[0]].route[0]
+                # 如果调整之后的路径第一个点和原始路径第一个点相同
+                if driver_list[driver_tuple[0]].route[0] == first_location_origin_route:
+                    driver_list[driver_tuple[0]].assist_t = driver_list[driver_tuple[0]].assist_t
+                else:
+                    driver_list[driver_tuple[0]].assist_t = -abs(driver_list[driver_tuple[0]].assist_t)
+                # 成功返回True
+                return True
+    return False
