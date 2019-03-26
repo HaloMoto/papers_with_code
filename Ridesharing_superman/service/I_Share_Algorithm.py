@@ -177,6 +177,7 @@ def insertion_feasibility_check(query, driver, m, n, t_cur, regl_Hexg_grids):
         del driver.route[0]
         # 遍历司机的路径列表
         for node_will_pass in driver.route:
+            node_will_pass = int(node_will_pass)
             regl_Hexg_grids[nodes_belong_to_which_grid[node_will_pass] - 1].driver_will_coming.append(
                 [driver.driver_id,
                  t_cur + datetime.timedelta(seconds=T[driver.cur_location - 1][node_will_pass - 1])])
@@ -226,6 +227,7 @@ def insertion_feasibility_check(query, driver, m, n, t_cur, regl_Hexg_grids):
     del driver.route[0]
     # 遍历司机的路径列表
     for node_will_pass in driver.route:
+        node_will_pass = int(node_will_pass)
         regl_Hexg_grids[nodes_belong_to_which_grid[node_will_pass] - 1].driver_will_coming.append(
             [driver.driver_id,
              t_cur + datetime.timedelta(seconds=T[driver.cur_location - 1][node_will_pass - 1])])
@@ -309,6 +311,7 @@ def find_the_nearest_empty_car_for_many(regl_Hexg_grids, merged_order, driver_li
                     del driver_list[driver_tuple[0]].route[0]
                     # 遍历司机的路径列表
                     for node_will_pass in driver_list[driver_tuple[0]].route:
+                        node_will_pass = int(node_will_pass)
                         regl_Hexg_grids[nodes_belong_to_which_grid[node_will_pass] - 1].driver_will_coming.append(
                             [driver_list[driver_tuple[0]].driver_id,
                              t_cur + datetime.timedelta(seconds=T[driver_list[driver_tuple[0]].cur_location - 1][node_will_pass - 1])])
@@ -513,6 +516,7 @@ def recommendation(driver_list, pickup_clusters, t_cur, regl_Hexg_grids, amplifi
             del driver.route[0]
             # 遍历司机的路径列表
             for node_will_pass in driver.route:
+                node_will_pass = int(node_will_pass)
                 regl_Hexg_grids[nodes_belong_to_which_grid[node_will_pass] - 1].driver_will_coming.append([driver.driver_id, t_cur + datetime.timedelta(seconds=T[driver.cur_location - 1][node_will_pass - 1])])
 
 ## 为一单寻找一个空车司机
@@ -558,6 +562,7 @@ def find_the_nearest_empty_car_for_one(query, driver_list, regl_Hexg_grids, t_cu
             del driver_list[driver_tuple[0]].route[0]
             # 遍历司机的路径列表
             for node_will_pass in driver_list[driver_tuple[0]].route:
+                node_will_pass = int(node_will_pass)
                 regl_Hexg_grids[nodes_belong_to_which_grid[node_will_pass] - 1].driver_will_coming.append(
                     [driver_list[driver_tuple[0]].driver_id,
                      t_cur + datetime.timedelta(seconds=T[driver_list[driver_tuple[0]].cur_location - 1][node_will_pass - 1])])
@@ -617,6 +622,7 @@ def find_the_nearest_empty_car_for_one(query, driver_list, regl_Hexg_grids, t_cu
                 del driver_list[driver_tuple[0]].route[0]
                 # 遍历司机的路径列表
                 for node_will_pass in driver_list[driver_tuple[0]].route:
+                    node_will_pass = int(node_will_pass)
                     regl_Hexg_grids[nodes_belong_to_which_grid[node_will_pass] - 1].driver_will_coming.append(
                         [driver_list[driver_tuple[0]].driver_id,
                          t_cur + datetime.timedelta(seconds=T[driver_list[driver_tuple[0]].cur_location - 1][node_will_pass - 1])])

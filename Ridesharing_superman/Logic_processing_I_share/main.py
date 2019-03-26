@@ -29,7 +29,6 @@ with open('../data/pickup_clusters.txt', 'rb') as f:
     pickup_clusters = pickle.load(f)
 with open('../data/delivery_clusters.txt', 'rb') as f:
     delivery_clusters = pickle.load(f)
-
 with open("../data/node_all.txt","r") as file_to_read:
     # 从文件中读取十字路口数
     num_of_intersections = int(file_to_read.readline())
@@ -40,7 +39,6 @@ with open("../data/node_all.txt","r") as file_to_read:
 # 节点所属格子
 with open('../data/nodes_belong_to_which_grid.txt', "rb") as f:
     nodes_belong_to_which_grid = pickle.load(f)
-
 ## 加载配置文件 ##
 # 模拟开始时间
 starttime = Timeframe.starttime
@@ -95,6 +93,10 @@ for i in range(num_of_durations):
     delivery_hot_index[i].append(0)
     for cluster in delivery_clusters:
         delivery_hot_index[i].append(delivery_hot_index[i][-1] + cluster.avg_of_each_duration[i])
+## 测试
+print(delivery_clusters[0].cluster_id)
+print(delivery_clusters[0].grids_included)
+print(pickup_clusters[0].avg_of_each_duration)
 
 """ 
 判断订单池中的订单数有没有超过阈值O_thres,
@@ -110,6 +112,7 @@ while endtime <= Timeframe.untildatetime:
             [driver.driver_id, starttime])
         # 遍历司机的路径列表
         for node_will_pass in driver.route:
+            node_will_pass = int(node_will_pass)
             regl_Hexg_grids[nodes_belong_to_which_grid[node_will_pass] - 1].driver_will_coming.append(
                 [driver.driver_id, starttime+datetime.timedelta(seconds=T[driver.cur_location-1][node_will_pass-1])])
     ## 对每个格子里的driver_will_coming列表进行排序，按照时间从早到晚排列
@@ -133,7 +136,7 @@ while endtime <= Timeframe.untildatetime:
         if P_temp < P_produce:
             # 生成num_of_arrivals个顾客
             for i in range(num_of_arrivals):
-                pickup_id = int(random.sample(cluster.grids_included, 1)) + num_of_intersections
+                pickup_id = int(random.sample(cluster.grids_included, 1)[0]) + num_of_intersections
                 temp = random.randint(1,delivery_hot_index[time_slot-1][num_of_durations])
                 for j in range(len(delivery_clusters)):
                     if temp > delivery_hot_index[time_slot-1][j] and temp <= delivery_hot_index[time_slot-1][j+1]:

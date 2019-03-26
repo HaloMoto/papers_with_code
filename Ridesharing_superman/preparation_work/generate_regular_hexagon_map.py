@@ -851,8 +851,9 @@ for cluster in delivery_clusters:
 for cluster in pickup_clusters:
     cluster.avg_of_each_duration = np.mean(np.array(cluster.records), axis=0)
     cluster.var_of_each_duration = np.var(np.array(cluster.records), axis=0)
-    # print(cluster.avg_of_each_duration)
-    # print(cluster.var_of_each_duration)
+    print("------------------------------")
+    print(cluster.avg_of_each_duration)
+    print(cluster.var_of_each_duration)
 
 ### 计算距离区域锚点最近的两个十字路口 ###
 for cluster in pickup_clusters:
