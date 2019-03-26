@@ -855,6 +855,11 @@ for cluster in pickup_clusters:
     print(cluster.avg_of_each_duration)
     print(cluster.var_of_each_duration)
 
+### 计算每个传送点区域每个时间段的均值和方差 ###
+for cluster in pickup_clusters:
+    cluster.avg_of_each_duration = np.mean(np.array(cluster.records), axis=0)
+    cluster.var_of_each_duration = np.var(np.array(cluster.records), axis=0)
+
 ### 计算距离区域锚点最近的两个十字路口 ###
 for cluster in pickup_clusters:
     first_nearest = 0

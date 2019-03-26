@@ -3,7 +3,7 @@
 
 import datetime
 import random
-
+import numpy as np
 # 范围时间
 # d_time = datetime.datetime.strptime('2019-03-01', '%Y-%m-%d')
 # d_time1 = datetime.datetime.strptime('2019-03-31', '%Y-%m-%d')
@@ -34,3 +34,5 @@ a = [a]
 print(a)
 
 x_sdjf = a
+list = [[1,2],[2,3],[3,4]]
+print(np.mean(np.array(list), axis=0))

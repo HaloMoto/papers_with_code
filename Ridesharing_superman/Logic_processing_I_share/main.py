@@ -97,6 +97,7 @@ for i in range(num_of_durations):
 print(delivery_clusters[0].cluster_id)
 print(delivery_clusters[0].grids_included)
 print(pickup_clusters[0].avg_of_each_duration)
+print(delivery_clusters[0].records)
 
 """ 
 判断订单池中的订单数有没有超过阈值O_thres,
