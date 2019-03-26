@@ -123,5 +123,5 @@ class Driver:
                 self.assist_t = t
                 break
 
-# D = np.loadtxt('../data/dist.txt')
-# LQ = np.loadtxt('../data/location_query.txt')
+D = np.loadtxt('../data/dist.txt')
+LQ = np.loadtxt('../data/location_query.txt')

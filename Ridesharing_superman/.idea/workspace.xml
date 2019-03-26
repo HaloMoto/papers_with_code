@@ -11,16 +11,17 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/Ridesharing_superman$tool.coverage" NAME="tool Coverage Results" MODIFIED="1553216204826" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/dataprocess" />
     <SUITE FILE_PATH="coverage/Ridesharing_superman$generate_square_grid.coverage" NAME="generate_square_grid Coverage Results" MODIFIED="1553233623300" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/preparation_work" />
-    <SUITE FILE_PATH="coverage/Ridesharing_superman$test.coverage" NAME="test Coverage Results" MODIFIED="1553517484850" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/Ridesharing_superman$generate_regular_hexagon_map.coverage" NAME="generate_regular_hexagon_map Coverage Results" MODIFIED="1553572556470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/preparation_work" />
+    <SUITE FILE_PATH="coverage/Ridesharing_superman$test.coverage" NAME="test Coverage Results" MODIFIED="1553585045210" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/Ridesharing_superman$main.coverage" NAME="main Coverage Results" MODIFIED="1553591434793" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Logic_processing_I_share" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/preparation_work/generate_regular_hexagon_map.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="1078" column="32" selection-start-line="1078" selection-start-column="32" selection-end-line="1078" selection-end-column="32" />
+            <state relative-caret-position="176">
+              <caret line="197" column="41" selection-start-line="197" selection-start-column="27" selection-end-line="197" selection-end-column="41" />
               <folding>
                 <element signature="e#48#102#0" expanded="true" />
               </folding>
@@ -28,16 +29,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/Gd_c.txt">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/service/I_Share_Algorithm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="364" column="12" selection-start-line="364" selection-start-column="12" selection-end-line="364" selection-end-column="12" />
+            <state relative-caret-position="-286">
+              <caret line="515" column="201" selection-start-line="515" selection-start-column="201" selection-end-line="515" selection-end-column="201" />
               <folding>
                 <element signature="e#48#66#0" expanded="true" />
               </folding>
@@ -46,26 +42,32 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/Gt.txt">
+        <entry file="file://$PROJECT_DIR$/test/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4326" />
+            <state relative-caret-position="398">
+              <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+              <folding>
+                <element signature="e#48#63#0" expanded="true" />
+                <marker date="1553585209855" expanded="true" signature="88:214" ph="..." />
+              </folding>
+            </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/Gt_c.txt">
-          <provider selected="true" editor-type-id="text-editor" />
+        <entry file="file://$PROJECT_DIR$/config/Timeframe.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="8" column="75" lean-forward="true" selection-start-line="8" selection-start-column="75" selection-end-line="8" selection-end-column="75" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/test.py">
+        <entry file="file://$PROJECT_DIR$/bean/Query.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="344">
-              <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
-              <folding>
-                <element signature="e#48#63#0" expanded="true" />
-                <marker date="1553517484827" expanded="true" signature="88:214" ph="..." />
-              </folding>
+            <state relative-caret-position="222">
+              <caret line="33" column="34" lean-forward="true" selection-start-line="33" selection-start-column="34" selection-end-line="33" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -73,10 +75,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Logic_processing_I_share/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="120" column="21" lean-forward="true" selection-start-line="120" selection-start-column="21" selection-end-line="120" selection-end-column="21" />
+            <state relative-caret-position="173">
+              <caret line="161" column="30" lean-forward="true" selection-start-line="161" selection-start-column="30" selection-end-line="161" selection-end-column="30" />
               <folding>
                 <element signature="e#43#79#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/service/Auxiliary.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="197">
+              <caret line="25" column="40" lean-forward="true" selection-start-line="25" selection-start-column="40" selection-end-line="25" selection-end-column="40" />
+              <folding>
+                <element signature="e#48#59#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -92,22 +106,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bean/Query.py">
+        <entry file="file://$PROJECT_DIR$/bean/Driver.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="821">
-              <caret line="38" selection-start-line="38" selection-end-line="38" />
+            <state relative-caret-position="2754">
+              <caret line="126" selection-start-line="126" selection-end-line="126" />
+              <folding>
+                <element signature="e#43#56#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bean/Driver.py">
+        <entry file="file://$PROJECT_DIR$/bean/Cluster.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3017">
-              <caret line="127" selection-start-line="127" selection-end-line="127" />
-              <folding>
-                <element signature="e#43#56#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="611">
+              <caret line="25" column="28" selection-start-line="25" selection-start-column="28" selection-end-line="25" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -126,7 +140,6 @@
       <find>kmeans</find>
       <find>regl_Hexg_grids</find>
       <find>pickup_history</find>
-      <find>grids_included</find>
       <find>grids_includ</find>
       <find>starttime1</find>
       <find>num_of_duration</find>
@@ -144,7 +157,16 @@
       <find>排序</find>
       <find>sort</find>
       <find>schedule</find>
+      <find>Gt</find>
+      <find>cross</find>
+      <find>grids_included</find>
+      <find>insertion</find>
+      <find>regl_Hexi_grids</find>
+      <find>原来路径的第一个点</find>
     </findStrings>
+    <replaceStrings>
+      <replace>regl_Hexg_grids</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -166,20 +188,20 @@
         <option value="$PROJECT_DIR$/data/node_all.txt" />
         <option value="$PROJECT_DIR$/data/edge_all.txt" />
         <option value="$PROJECT_DIR$/data/edge_all_length.txt" />
-        <option value="$PROJECT_DIR$/service/Auxiliary.py" />
         <option value="$PROJECT_DIR$/service/T_Share_Algorithm.py" />
-        <option value="$PROJECT_DIR$/bean/Query.py" />
-        <option value="$PROJECT_DIR$/bean/Driver.py" />
         <option value="$PROJECT_DIR$/bean/Cluster.py" />
-        <option value="$PROJECT_DIR$/Logic_processing_I_share/main.py" />
-        <option value="$PROJECT_DIR$/test/test.py" />
         <option value="$PROJECT_DIR$/preparation_work/generate_regular_hexagon_map.py" />
+        <option value="$PROJECT_DIR$/test/test.py" />
+        <option value="$PROJECT_DIR$/bean/Driver.py" />
+        <option value="$PROJECT_DIR$/bean/Query.py" />
+        <option value="$PROJECT_DIR$/Logic_processing_I_share/main.py" />
+        <option value="$PROJECT_DIR$/service/Auxiliary.py" />
         <option value="$PROJECT_DIR$/service/I_Share_Algorithm.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="676" />
+    <option name="x" value="-7" />
     <option name="width" value="697" />
     <option name="height" value="735" />
   </component>
@@ -281,7 +303,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.generate_regular_hexagon_map">
+  <component name="RunManager" selected="Python.main">
     <configuration name="generate_regular_hexagon_map" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Ridesharing_superman" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -318,6 +340,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/preparation_work/generate_square_grid.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Ridesharing_superman" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Logic_processing_I_share" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Logic_processing_I_share/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -372,8 +416,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.generate_regular_hexagon_map" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.test" />
+        <item itemvalue="Python.generate_regular_hexagon_map" />
         <item itemvalue="Python.generate_square_grid" />
         <item itemvalue="Python.tool" />
       </list>
@@ -390,23 +435,23 @@
       <option name="presentableId" value="Default" />
       <updated>1552962965023</updated>
       <workItem from="1552962989098" duration="125200000" />
-      <workItem from="1553497586230" duration="22957000" />
+      <workItem from="1553497586230" duration="34769000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="148157000" />
+    <option name="totallyTimeSpent" value="159969000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="676" y="0" width="697" height="735" extended-state="0" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19152276" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.09228442" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3295082" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.30983606" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3295082" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -447,13 +492,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
           <caret line="8" column="33" lean-forward="true" selection-start-line="8" selection-start-column="33" selection-end-line="8" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/Timeframe.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="8" column="75" lean-forward="true" selection-start-line="8" selection-start-column="75" selection-end-line="8" selection-end-column="75" />
         </state>
       </provider>
     </entry>
@@ -550,16 +588,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/service/Auxiliary.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="15" column="11" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
-          <folding>
-            <element signature="e#48#59#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bean/SGrid.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
@@ -604,29 +632,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bean/Cluster.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="25" column="28" selection-start-line="25" selection-start-column="28" selection-end-line="25" selection-end-column="28" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/data/Gd_c.txt">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/bean/Query.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="821">
-          <caret line="38" selection-start-line="38" selection-end-line="38" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/data/Gt_c.txt">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test.py">
+    <entry file="file://$PROJECT_DIR$/data/Gt.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="344">
-          <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
-          <folding>
-            <element signature="e#48#63#0" expanded="true" />
-            <marker date="1553517484827" expanded="true" signature="88:214" ph="..." />
-          </folding>
-        </state>
+        <state relative-caret-position="-4303" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bean/RHGrid.py">
@@ -636,41 +650,72 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bean/Driver.py">
+    <entry file="file://$PROJECT_DIR$/bean/Cluster.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3017">
-          <caret line="127" selection-start-line="127" selection-end-line="127" />
-          <folding>
-            <element signature="e#43#56#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="611">
+          <caret line="25" column="28" selection-start-line="25" selection-start-column="28" selection-end-line="25" selection-end-column="28" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/Gd_c.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Gt.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4326" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Gt_c.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/preparation_work/generate_regular_hexagon_map.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="1078" column="32" selection-start-line="1078" selection-start-column="32" selection-end-line="1078" selection-end-column="32" />
+        <state relative-caret-position="176">
+          <caret line="197" column="41" selection-start-line="197" selection-start-column="27" selection-end-line="197" selection-end-column="41" />
           <folding>
             <element signature="e#48#102#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/config/Timeframe.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="8" column="75" lean-forward="true" selection-start-line="8" selection-start-column="75" selection-end-line="8" selection-end-column="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="398">
+          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+          <folding>
+            <element signature="e#48#63#0" expanded="true" />
+            <marker date="1553585209855" expanded="true" signature="88:214" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bean/Driver.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2754">
+          <caret line="126" selection-start-line="126" selection-end-line="126" />
+          <folding>
+            <element signature="e#43#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bean/Query.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="33" column="34" lean-forward="true" selection-start-line="33" selection-start-column="34" selection-end-line="33" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/service/Auxiliary.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="25" column="40" lean-forward="true" selection-start-line="25" selection-start-column="40" selection-end-line="25" selection-end-column="40" />
+          <folding>
+            <element signature="e#48#59#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Logic_processing_I_share/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="120" column="21" lean-forward="true" selection-start-line="120" selection-start-column="21" selection-end-line="120" selection-end-column="21" />
+        <state relative-caret-position="173">
+          <caret line="161" column="30" lean-forward="true" selection-start-line="161" selection-start-column="30" selection-end-line="161" selection-end-column="30" />
           <folding>
             <element signature="e#43#79#0" expanded="true" />
           </folding>
@@ -679,8 +724,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/service/I_Share_Algorithm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="364" column="12" selection-start-line="364" selection-start-column="12" selection-end-line="364" selection-end-column="12" />
+        <state relative-caret-position="-286">
+          <caret line="515" column="201" selection-start-line="515" selection-start-column="201" selection-end-line="515" selection-end-column="201" />
           <folding>
             <element signature="e#48#66#0" expanded="true" />
           </folding>

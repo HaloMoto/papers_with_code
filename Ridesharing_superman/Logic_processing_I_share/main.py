@@ -11,6 +11,7 @@ import pickle
 from math import exp, factorial, pow
 import random
 import datetime
+from service.I_Share_Algorithm import combination_of_multiple_orders, dual_side_taxi_searching, recommendation
 
 ## 外部文件加载 ##
 # 空间距离矩阵
@@ -49,11 +50,11 @@ endtime = Timeframe.endtime
 unit_time = (starttime-endtime).seconds
 
 ## 订单分布 ##
-# 顾客到达速率放大系数
-amplification_factor = input('Amplification factor of arrival rate:')
+## 顾客到达速率放大系数
+amplification_factor = int(input('Amplification factor of arrival rate:'))
 
 ## 司机数 ##
-num_of_drivers = input('Please enter the number of drivers:')
+num_of_drivers = int(input('Please enter the number of drivers:'))
 
 ## 司机池定义 ##
 driver_list = []
@@ -117,11 +118,12 @@ while endtime <= Timeframe.untildatetime:
         grid.driver_will_coming = sorted(grid.driver_will_coming, key=lambda driver: driver[1])
 
     ## 判断当前时间属于哪个时间段
-    time_slot = (starttime - Timeframe.starttime).seconds / 60 / Cluster.dt + 1
+    time_slot = int((starttime - Timeframe.starttime).seconds / 60 / Cluster.dt) + 1
     ## 每个单位时间，生成订单 ##
     for cluster in pickup_clusters:
         # 该区域顾客到达速率
         V_arrival = cluster.avg_of_each_duration[time_slot-1] / (Cluster.dt * 60) * Timeframe.windowsize.seconds
+        print(V_arrival)
         # 对区域顾客到达速率进行放大
         V_arrival = V_arrival * amplification_factor
         # 该区域单位时间生成num_of_arrivals个顾客的概率
@@ -131,7 +133,7 @@ while endtime <= Timeframe.untildatetime:
         if P_temp < P_produce:
             # 生成num_of_arrivals个顾客
             for i in range(num_of_arrivals):
-                pickup_id = random.sample(cluster.grids_included, 1) + num_of_intersections
+                pickup_id = int(random.sample(cluster.grids_included, 1)) + num_of_intersections
                 temp = random.randint(1,delivery_hot_index[time_slot-1][num_of_durations])
                 for j in range(len(delivery_clusters)):
                     if temp > delivery_hot_index[time_slot-1][j] and temp <= delivery_hot_index[time_slot-1][j+1]:
@@ -144,15 +146,18 @@ while endtime <= Timeframe.untildatetime:
     for cluster in pickup_clusters:
         if len(cluster.query_list) > RON_threshold:
             # 拼单算法（包括寻找空车司机以及路径规划）
-            pass
+            combination_of_multiple_orders(cluster.query_list, regl_Hexg_grids, driver_list, starttime)
+            ## 将剩下没有进行拼单操作的订单使用双边查找算法
+            cluster.query_list = [query for query in cluster.query_list if query.condition == 0]
+            for query in cluster.query_list:
+                dual_side_taxi_searching(driver_list, regl_Hexg_grids, query, starttime)
         else:
             # 双边查找算法
-            pass
-            # 插入检测
-            pass
+            for query in cluster.query_list:
+                dual_side_taxi_searching(driver_list, regl_Hexg_grids, query, starttime)
 
     ## 空车司机使用推荐算法
-
+    recommendation(driver_list,pickup_clusters,starttime,regl_Hexg_grids,amplification_factor)
     ## 更新司机当前位置，以及更新每个格子区域司机列表
     for driver in driver_list:
         # 如果司机车上乘客不为0
@@ -182,7 +187,7 @@ while endtime <= Timeframe.untildatetime:
     ## 删除每个格子里的driver_will_coming列表中endtime之前的所有记录
     for grid in regl_Hexg_grids:
         while True:
-            if grid.driver_will_coming[0][1] <= endtime:
+            if grid.driver_will_coming[0][1] < endtime:
                 del grid.driver_will_coming[0]
             else:
                 break
@@ -192,5 +197,6 @@ while endtime <= Timeframe.untildatetime:
     endtime = endtime + Timeframe.windowsize
 
 ## 算法结束时，有的车还没有跑完route中的所有点，在这里接着跑完
+
 
 ## 打印输出信息

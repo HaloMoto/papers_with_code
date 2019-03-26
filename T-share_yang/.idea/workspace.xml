@@ -34,8 +34,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Algorithm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-67">
-              <caret line="83" column="64" selection-start-line="83" selection-start-column="56" selection-end-line="83" selection-end-column="64" />
+            <state relative-caret-position="338">
+              <caret line="191" column="31" lean-forward="true" selection-start-line="187" selection-start-column="12" selection-end-line="191" selection-end-column="31" />
               <folding>
                 <element signature="e#48#73#0" expanded="true" />
               </folding>
@@ -210,8 +210,8 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="676" />
+  <component name="ProjectFrameBounds" extendedState="1">
+    <option name="x" value="-7" />
     <option name="width" value="697" />
     <option name="height" value="735" />
   </component>
@@ -391,18 +391,18 @@
       <workItem from="1552032662502" duration="33717000" />
       <workItem from="1552295436378" duration="33000" />
       <workItem from="1553500735292" duration="7603000" />
-      <workItem from="1553569593680" duration="1799000" />
+      <workItem from="1553569593680" duration="2611000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="166376000" />
+    <option name="totallyTimeSpent" value="167188000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
+    <frame x="-7" y="0" width="697" height="735" extended-state="1" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.11043873" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22919936" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -602,8 +602,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Algorithm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-67">
-          <caret line="83" column="64" selection-start-line="83" selection-start-column="56" selection-end-line="83" selection-end-column="64" />
+        <state relative-caret-position="338">
+          <caret line="191" column="31" lean-forward="true" selection-start-line="187" selection-start-column="12" selection-end-line="191" selection-end-column="31" />
           <folding>
             <element signature="e#48#73#0" expanded="true" />
           </folding>

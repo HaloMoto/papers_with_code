@@ -31,7 +31,7 @@ class Query:
         if self.latest_pickup_time < current_time:
             return False
 
-T = np.loadtxt("time.txt")
+T = np.loadtxt("../data/time.txt")
 
 #############################
 #       Test 1

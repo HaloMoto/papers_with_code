@@ -22,5 +22,5 @@ def obtainPath(i, j):
     else:
         return obtainPath(int(i), int(parent[i][j])) + str(int(parent[i][j])+1) + obtainPath(int(parent[i][j]), int(j))
 
-# dist = np.loadtxt('../data/dist.txt')
-# parent = np.loadtxt('../data/route.txt')
+dist = np.loadtxt('../data/dist.txt')
+parent = np.loadtxt('../data/route.txt')
