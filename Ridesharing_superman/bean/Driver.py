@@ -32,6 +32,8 @@ class Driver:
         self.total_time_traveled = 0
         # 载客总行驶距离
         self.total_distance_traveled = 0
+        # 无共享的总行驶距离
+        self.total_distance_no_sharing = 0
         # 连接数据库
         self.cnn = open_db_connection2()
 

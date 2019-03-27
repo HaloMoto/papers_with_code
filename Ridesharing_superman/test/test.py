@@ -36,3 +36,10 @@ print(a)
 x_sdjf = a
 list = [[1,2],[2,3],[3,4]]
 print(np.mean(np.array(list), axis=0))
+
+y = 1
+def fun(y):
+    y = 2
+print(y)
+fun(y)
+print(y)

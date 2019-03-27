@@ -856,7 +856,7 @@ for cluster in pickup_clusters:
     print(cluster.var_of_each_duration)
 
 ### 计算每个传送点区域每个时间段的均值和方差 ###
-for cluster in pickup_clusters:
+for cluster in delivery_clusters:
     cluster.avg_of_each_duration = np.mean(np.array(cluster.records), axis=0)
     cluster.var_of_each_duration = np.var(np.array(cluster.records), axis=0)
 
