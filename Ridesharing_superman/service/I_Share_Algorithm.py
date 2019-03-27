@@ -45,9 +45,17 @@ def combination_of_multiple_orders(query_list, regl_Hexg_grids, driver_list, t_c
         dict_of_delivery_point_belongs_to[i+1] = []
     for query in query_list:
         for i in regl_Hexg_grids[query.delivery_location-num_of_intersections-1].delivery_cluster:
+            # print("=======================")
+            # print(i,query.query_id)
+            # print("=======================")
             dict_of_delivery_point_belongs_to[i].append(query)
     ## test ##
     # print("字典定义")
+    # print("========================")
+    # for i in range(num_of_clusters):
+    #     for j in dict_of_delivery_point_belongs_to[i+1]:
+    #         print(j.query_id)
+    # print("========================")
     ## test ##
     # 遍历字典
     for key in dict_of_delivery_point_belongs_to.keys():
@@ -121,11 +129,8 @@ def combination_of_multiple_orders(query_list, regl_Hexg_grids, driver_list, t_c
                     merged_orders = dict()
                     for j in range(num_of_drivers):
                         merged_orders[j] = []
-                    print("=======================")
                     for j in range(len(result_of_classifier[i])):
-                        print(result_of_classifier[i][j].query_id)
                         merged_orders[j % num_of_drivers].append(result_of_classifier[i][j])
-                    print("=======================")
                     ## 给每个合单分配司机
                     for j in range(num_of_drivers):
                         ## 寻找一辆距离最近的空车

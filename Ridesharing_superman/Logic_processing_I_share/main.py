@@ -174,7 +174,14 @@ while endtime <= Timeframe.untildatetime:
         # print("id",cluster.cluster_id)
         # print("query_list",cluster.query_list)
         # print(len(cluster.query_list))
+        # print("=======================")
+        # for query in cluster.query_list:
+        #     print(query.query_id)
+        # print("=======================")
         ## test ##
+        """
+        有聚类
+        """
         if len(cluster.query_list) > RON_threshold:
             ## test ##
             print("combination")
@@ -198,6 +205,14 @@ while endtime <= Timeframe.untildatetime:
             for query in cluster.query_list:
                 # print("状态2",query.condition)
                 dual_side_taxi_searching(driver_list, regl_Hexg_grids, query, starttime)
+        cluster.query_list = [query for query in cluster.query_list if query.condition == 0]
+        """
+        无聚类
+        """
+        # # 双边查找算法
+        # for query in cluster.query_list:
+        #     # print("状态2",query.condition)
+        #     dual_side_taxi_searching(driver_list, regl_Hexg_grids, query, starttime)
 
     ## 空车司机使用推荐算法
     ## test ##

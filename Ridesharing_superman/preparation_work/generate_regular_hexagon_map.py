@@ -153,6 +153,9 @@ for i in range(len(centroid)):
 for i in range(len(labels)):
     pickup_clusters[labels[i]].grids_included.add(pickup_history[i][2])
     regl_Hexg_grids[pickup_history[i][2]-1].pickup_cluster.append(labels[i]+1)
+# 去重
+for grid in regl_Hexg_grids:
+    grid.pickup_cluster = list(set(grid.pickup_cluster))
 
 ### 生成传送点cluster ###
 # cluster数目
@@ -171,6 +174,9 @@ for i in range(len(centroid)):
 for i in range(len(labels)):
     delivery_clusters[labels[i]].grids_included.add(delivery_history[i][2])
     regl_Hexg_grids[delivery_history[i][2]-1].delivery_cluster.append(labels[i]+1)
+# 去重
+for grid in regl_Hexg_grids:
+    grid.delivery_cluster = list(set(grid.delivery_cluster))
 
 ### 每个区域每天每个固定长的时间段的订单数分布 ###
 # 时间段长度,单位为分钟
