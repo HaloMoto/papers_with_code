@@ -23,7 +23,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Logic_processing_T_share/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
+            <state relative-caret-position="240">
               <caret line="295" lean-forward="true" selection-start-line="295" selection-end-line="295" />
               <folding>
                 <element signature="e#43#79#0" expanded="true" />
@@ -201,9 +201,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="-7" />
-    <option name="width" value="697" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="813" />
+    <option name="width" value="560" />
     <option name="height" value="735" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -429,22 +429,22 @@
       <workItem from="1553497586230" duration="42007000" />
       <workItem from="1553649303615" duration="41071000" />
       <workItem from="1553734324447" duration="19438000" />
-      <workItem from="1553759630363" duration="3701000" />
+      <workItem from="1553759630363" duration="4556000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="231417000" />
+    <option name="totallyTimeSpent" value="232272000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="697" height="735" extended-state="1" />
+    <frame x="813" y="0" width="560" height="735" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27943486" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.356" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3295082" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.37603992" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.37603992" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -728,7 +728,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Logic_processing_T_share/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
+        <state relative-caret-position="240">
           <caret line="295" lean-forward="true" selection-start-line="295" selection-end-line="295" />
           <folding>
             <element signature="e#43#79#0" expanded="true" />
