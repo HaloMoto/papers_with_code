@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:sec = "http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head lang="en">
+    <meta charset="utf-8" />
+    <title>路书</title>
+    <style type="text/css">
+        body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
+        #map_canvas{width:100%;height:500px;}
+        #result {width:100%}
+    </style>
+    <script src="http://api.map.baidu.com/api?api?v=2.0&ak=tzAcIFZ5xCoRwm63NcBGfoVB"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/LuShu/1.2/src/LuShu_min.js"></script>
+</head>
+<body>
+<div id="map_canvas"></div>
+<div id="result"></div>
+<button id="run">开始</button>
+<button id="stop">停止</button>
+<button id="pause">暂停</button>
+<button id="hide">隐藏信息窗口</button>
+<button id="show">展示信息窗口</button>
+<script th:inline="javascript">
+    console.log([[${route}]]);
+    console.log([[${schedule}]]);
+    var map = new BMap.Map('map_canvas');
+    map.enableScrollWheelZoom();
+    map.centerAndZoom(new BMap.Point(-73.923876,40.661467), 17);
+    // 接应点
+    var accIcon = new BMap.Icon("img/acc.png", new BMap.Size(37, 46), {
+        anchor: new BMap.Size(20, 20)
+    });
+    // 传送点
+    var tarIcon = new BMap.Icon("img/tar.png", new BMap.Size(37, 46), {
+        anchor: new BMap.Size(20, 20)
+    });
+    //路径
+    var arrPois = [];
+    for(var i = 0; i < [[${route}]].length; i++){
+        var point = [new BMap.Point([[${route}]][i].longitude, [[${route}]][i].latitude)];
+        console.log(point);
+        arrPois = arrPois.concat(point);
+    }
+    console.log(arrPois);
+    // 上下车点数组
+    var landmPois = [];
+    for(var i = 0; i < [[${schedule}]].length; i++){
+        if([[${schedule}]][i].conditions == 0){
+            var point = [{lng:[[${schedule}]][i].longitude,lat:[[${schedule}]][i].latitude,html:'<h1>上车</h1><h3>车上乘客数：'+[[${schedule}]][i].remain+'</h3>',pauseTime:2}];
+            console.log(point);
+            map.addOverlay(new BMap.Marker(new BMap.Point([[${schedule}]][i].longitude,[[${schedule}]][i].latitude), {icon:accIcon}));
+            landmPois = landmPois.concat(point);
+        }
+        else{
+            var point = [{lng:[[${schedule}]][i].longitude,lat:[[${schedule}]][i].latitude,html:'<h1>下车</h1><br><h3>车上乘客数：'+[[${schedule}]][i].remain+'</h3>',pauseTime:2}];
+            map.addOverlay(new BMap.Marker(new BMap.Point([[${schedule}]][i].longitude,[[${schedule}]][i].latitude), {icon:tarIcon}));
+            landmPois = landmPois.concat(point);
+        }
+    }
+    console.log(landmPois);
+    // 定义路书
+    var lushu;
+    // 实例化一个驾车导航用来生成路线
+    map.addOverlay(new BMap.Polyline(arrPois, {strokeColor: '#111'}));
+    map.setViewport(arrPois);
+
+    lushu = new BMapLib.LuShu(map,arrPois,{
+        defaultContent:[[${schedule}]][0].driverid,//"从天安门到百度大厦"
+        autoView:false,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
+        icon  : new BMap.Icon('http://lbsyun.baidu.com/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),
+        speed: 40,
+        enableRotation:true,//是否设置marker随着道路的走向进行旋转
+        landmarkPois: landmPois});
+    //绑定事件
+    $("run").onclick = function(){
+        lushu.start();
+    }
+    $("stop").onclick = function(){
+        lushu.stop();
+    }
+    $("pause").onclick = function(){
+        lushu.pause();
+    }
+    $("hide").onclick = function(){
+        lushu.hideInfoWindow();
+    }
+    $("show").onclick = function(){
+        lushu.showInfoWindow();
+    }
+    function $(element){
+        return document.getElementById(element);
+    }
+</script>
+</body>
+</html>
+

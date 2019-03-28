@@ -1,0 +1,71 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />  
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
+	<title>轨迹回放</title>  
+	<style type="text/css">  
+		html{height:100%}  
+		body{height:100%;margin:0px;padding:0px}  
+		#container{height:100%;}
+		.input-date{
+			padding: 10px 20px;
+		}
+		.input-date input{
+			height: 30px;
+		}
+		.input-note{
+			line-height: 30px;
+			font-size: 12px;
+			padding-left: 20px;
+		}
+	</style>
+	<style>
+		ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+			background-color: #333;
+		}
+
+		li {
+			float: left;
+		}
+
+		li a {
+			display: block;
+			color: white;
+			text-align: center;
+			padding: 14px 16px;
+			text-decoration: none;
+		}
+
+		li a:hover {
+			background-color: #111;
+		}
+	</style>
+</head>  
+
+<body>
+
+	<!--导航栏-->
+	<ul>
+		<li><a class="active" href="trackback_one">查询一个司机</a></li>
+		<li><a href="trackback_many">查询一批司机</a></li>
+	</ul>
+
+	<div class="input-date">
+		<form action="/searchDrivers" method="get">
+			<input type="text" id="driverid_start" name="driverid_start" placeholder="司机id下限">
+			<input type="text" id="driverid_end" name="driverid_end" placeholder="司机id上限">
+			<input type="text" id="after" name="after" placeholder="开始时间">
+			<input  type="text" id="before" name="before" placeholder="结束时间">
+			<input type="submit" value="轨迹回放">
+			<span id="realTime"></span>
+		</form>
+	</div>
+
+	<div class="input-note">输入2015-11-25 14:00:00至2015-11-25 16:00:00。或2015-11-24 14:00:00至2015-11-24 16:00:00</div>
+</body>  
+</html>

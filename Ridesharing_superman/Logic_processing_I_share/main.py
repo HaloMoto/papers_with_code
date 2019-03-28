@@ -108,6 +108,9 @@ print(pickup_clusters[0].query_list)
 如果不是，则订单直接进入搜索算法处理。将拼单算法得到的合单进行路径规划。
 将搜索算法得到的合单进行插入检查 ##
 """
+## 计时器 ##
+time_start = datetime.datetime.now()
+
 while endtime <= Timeframe.untildatetime:
     ## 清空每个格子的driver_will_coming列表
     for grid in regl_Hexg_grids:
@@ -182,37 +185,37 @@ while endtime <= Timeframe.untildatetime:
         """
         有聚类
         """
-        if len(cluster.query_list) > RON_threshold:
-            ## test ##
-            print("combination")
-            ## test ##
-            # 将已经被服务过的订单删除
-            cluster.query_list = [query for query in cluster.query_list if query.condition == 0]
-            # 拼单算法（包括寻找空车司机以及路径规划）
-            combination_of_multiple_orders(cluster.query_list, regl_Hexg_grids, driver_list, starttime)
-            ## 将剩下没有进行拼单操作的订单使用双边查找算法
-            cluster.query_list = [query for query in cluster.query_list if query.condition == 0]
-            for query in cluster.query_list:
-                # print("状态1",query.condition)
-                dual_side_taxi_searching(driver_list, regl_Hexg_grids, query, starttime)
-        else:
-            ## test ##
-            # print("dual_side")
-            ## test ##
-            # 首先将可能已经被服务的订单删除
-            cluster.query_list = [query for query in cluster.query_list if query.condition == 0]
-            # 双边查找算法
-            for query in cluster.query_list:
-                # print("状态2",query.condition)
-                dual_side_taxi_searching(driver_list, regl_Hexg_grids, query, starttime)
-        cluster.query_list = [query for query in cluster.query_list if query.condition == 0]
+        # if len(cluster.query_list) > RON_threshold:
+        #     ## test ##
+        #     # print("combination")
+        #     ## test ##
+        #     # 将已经被服务过的订单删除
+        #     cluster.query_list = [query for query in cluster.query_list if query.condition == 0]
+        #     # 拼单算法（包括寻找空车司机以及路径规划）
+        #     combination_of_multiple_orders(cluster.query_list, regl_Hexg_grids, driver_list, starttime)
+        #     ## 将剩下没有进行拼单操作的订单使用双边查找算法
+        #     cluster.query_list = [query for query in cluster.query_list if query.condition == 0]
+        #     for query in cluster.query_list:
+        #         # print("状态1",query.condition)
+        #         dual_side_taxi_searching(driver_list, regl_Hexg_grids, query, starttime)
+        # else:
+        #     ## test ##
+        #     # print("dual_side")
+        #     ## test ##
+        #     # 首先将可能已经被服务的订单删除
+        #     cluster.query_list = [query for query in cluster.query_list if query.condition == 0]
+        #     # 双边查找算法
+        #     for query in cluster.query_list:
+        #         # print("状态2",query.condition)
+        #         dual_side_taxi_searching(driver_list, regl_Hexg_grids, query, starttime)
+        # cluster.query_list = [query for query in cluster.query_list if query.condition == 0]
         """
         无聚类
         """
-        # # 双边查找算法
-        # for query in cluster.query_list:
-        #     # print("状态2",query.condition)
-        #     dual_side_taxi_searching(driver_list, regl_Hexg_grids, query, starttime)
+        # 双边查找算法
+        for query in cluster.query_list:
+            # print("状态2",query.condition)
+            dual_side_taxi_searching(driver_list, regl_Hexg_grids, query, starttime)
 
     ## 空车司机使用推荐算法
     ## test ##
@@ -263,6 +266,9 @@ while endtime <= Timeframe.untildatetime:
     starttime = endtime
     endtime = endtime + Timeframe.windowsize
 
+## 计时结束 ##
+time_end = datetime.datetime.now()
+
 ## 算法结束时，有的车还没有跑完route中的所有点，在这里接着跑完
 while True:
     sign = True
@@ -295,3 +301,4 @@ print("query id", query_id)
 print("number of order served", number_of_order_served)
 print("Passenger service rate:", number_of_order_served / total_order)
 print("Total distance saving:", total_distance - total_distance_traveled)
+print("time cost:", time_end-time_start)

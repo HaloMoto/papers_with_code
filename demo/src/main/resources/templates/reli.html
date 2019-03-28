@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head lang="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=tzAcIFZ5xCoRwm63NcBGfoVB"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/LuShu/1.2/src/LuShu_min.js"></script>
+    <title>热力图功能示例</title>
+    <style type="text/css">
+        ul,li{list-style: none;margin:0;padding:0;float:left;}
+        html{height:100%}
+        body{height:100%;margin:0px;padding:0px;font-family:"微软雅黑";}
+        #container{height:500px;width:100%;}
+        #r-result{width:100%;}
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<div id="r-result">
+    <input type="button"  onclick="openHeatmap();" value="显示热力图"/><input type="button"  onclick="closeHeatmap();" value="关闭热力图"/>
+</div>
+<br>
+<button id="run">开始</button>
+<button id="stop">停止</button>
+<button id="pause">暂停</button>
+<button id="hide">隐藏信息窗口</button>
+<button id="show">展示信息窗口</button>
+<script type="text/javascript" th:inline="javascript">
+    var map = new BMap.Map("container");          // 创建地图实例
+
+    map.centerAndZoom(new BMap.Point(-73.923876,40.661467), 17);// 初始化地图，设置中心点坐标和地图级别
+    map.enableScrollWheelZoom(); // 允许滚轮缩放
+
+    console.log([[${route}]][1][0]);
+    console.log([[${schedule}]]);
+    console.log([[${driverid_start}]]);
+
+    var points = [];
+    // 热力图生成
+    for (var i = [[${driverid_start}]]; i < [[${driverid_end}]]; i++){
+        for (var j = 0; j < [[${schedule}]][i].length; j++){
+            var point = [{"lng":[[${schedule}]][i][j].longitude,"lat":[[${schedule}]][i][j].latitude,"count":1}];
+            points = points.concat(point);
+        }
+    }
+
+    // 定义路书数组
+    var lushus = [];
+    for (var i = [[${driverid_start}]]; i < [[${driverid_end}]]; i++){
+        var arrPois = [];
+        for (var j = 0; j<[[${route}]][i].length; j++){
+            var point = [{"lng":[[${route}]][i][j].longitude,"lat":[[${route}]][i][j].latitude}];
+            arrPois = arrPois.concat(point);
+        }
+        console.log(arrPois);
+        var lushu;
+        lushu = new BMapLib.LuShu(map,arrPois,{
+            defaultContent:[[${route}]][i][0].driverid,//"从天安门到百度大厦"
+            autoView:false,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
+            icon  : new BMap.Icon('http://lbsyun.baidu.com/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),
+            speed: 40,
+            enableRotation:true,//是否设置marker随着道路的走向进行旋转
+            landmarkPois: []});
+        lushus.push(lushu);
+    }
+
+    if(!isSupportCanvas()){
+        alert('热力图目前只支持有canvas支持的浏览器,您所使用的浏览器不能使用热力图功能~')
+    }
+    //详细的参数,可以查看heatmap.js的文档 https://github.com/pa7/heatmap.js/blob/master/README.md
+    //参数说明如下:
+    /* visible 热力图是否显示,默认为true
+     * opacity 热力的透明度,1-100
+     * radius 势力图的每个点的半径大小
+     * gradient  {JSON} 热力图的渐变区间 . gradient如下所示
+     *	{
+            .2:'rgb(0, 255, 255)',
+            .5:'rgb(0, 110, 255)',
+            .8:'rgb(100, 0, 255)'
+        }
+        其中 key 表示插值的位置, 0~1.
+            value 为颜色值.
+     */
+    heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":20});
+    map.addOverlay(heatmapOverlay);
+    heatmapOverlay.setDataSet({data:points,max:10});
+    //是否显示热力图
+    function openHeatmap(){
+        heatmapOverlay.show();
+    }
+    function closeHeatmap(){
+        heatmapOverlay.hide();
+    }
+    closeHeatmap();
+    function setGradient(){
+        /*格式如下所示:
+       {
+             0:'rgb(102, 255, 0)',
+             .5:'rgb(255, 170, 0)',
+             1:'rgb(255, 0, 0)'
+       }*/
+        var gradient = {};
+        var colors = document.querySelectorAll("input[type='color']");
+        colors = [].slice.call(colors,0);
+        colors.forEach(function(ele){
+            gradient[ele.getAttribute("data-key")] = ele.value;
+        });
+        heatmapOverlay.setOptions({"gradient":gradient});
+    }
+    //判断浏览区是否支持canvas
+    function isSupportCanvas(){
+        var elem = document.createElement('canvas');
+        return !!(elem.getContext && elem.getContext('2d'));
+    }
+
+    //绑定事件
+    $("run").onclick = function(){
+        console.log(lushus.length);
+        for (var i = 0; i < lushus.length; i++){
+            lushus[i].start();
+        }
+    }
+    $("stop").onclick = function(){
+        for (var i = 0; i < lushus.length; i++){
+            lushus[i].stop();
+        }
+    }
+    $("pause").onclick = function(){
+        for (var i = 0; i < lushus.length; i++){
+            lushus[i].pause();
+        }
+    }
+    $("hide").onclick = function(){
+        for (var i = 0; i < lushus.length; i++){
+            lushus[i].hideInfoWindow();
+        }
+    }
+    $("show").onclick = function(){
+        for (var i = 0; i < lushus.length; i++) {
+            lushus[i].showInfoWindow();
+        }
+    }
+    function $(element){
+        return document.getElementById(element);
+    }
+</script>
+</body>
+</html>
