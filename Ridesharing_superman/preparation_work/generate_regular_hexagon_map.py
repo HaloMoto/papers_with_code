@@ -87,6 +87,8 @@ if cursor != None:
             if grid.is_in_this_grid(point_temp):
                 grid.add_delivery_history_point(point)
                 break
+# 关闭数据库连接
+close_db_connection(connection_object)
 
 ### 用kmeans算法计算每个格子的锚点 ###
 # 循环遍历每个格子

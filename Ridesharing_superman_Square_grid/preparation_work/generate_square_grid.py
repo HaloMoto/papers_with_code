@@ -79,25 +79,6 @@ if cursor != None:
                 break
 # 关闭数据库连接
 close_db_connection(connection_object)
-### 统计每个格子的历史传送点数据 ###
-# 连接数据库
-connection_object = open_db_connection1()
-# 获取游标
-cursor = connection_object.cursor()
-# 编辑获取传送点数据的查询语句并执行
-q = "select Dropoff_longitude,Dropoff_latitude, Lpep_dropoff_datetime from trip where Dropoff_longitude <= -73.906124 and Dropoff_longitude >= -73.929870 and Dropoff_latitude >= 40.645793 and Dropoff_latitude <= 40.663759"
-cursor.execute(q)
-# 遍历查询结果
-if cursor != None:
-    for point in cursor:
-        distance1 = cal_distance(lat1=point[1], lon1=point[0], lat2=point[1], lon2=LL[0])
-        distance2 = cal_distance(lat1=point[1], lon1=point[0], lat2=LL[1], lon2=point[0])
-        # 计算point在地图中的坐标
-        point_temp = (distance1.twopoint_distance(), distance2.twopoint_distance())
-        for grid in sqr_grids:
-            if grid.is_in_this_grid(point_temp):
-                grid.add_delivery_history_point(point)
-                break
 
 ### 用kmeans算法计算每个格子的锚点 ###
 # 循环遍历每个格子

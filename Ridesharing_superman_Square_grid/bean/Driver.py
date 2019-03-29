@@ -61,34 +61,34 @@ class Driver:
                 if self.cur_schedule and self.cur_location == self.cur_schedule[0][0]:
                     if self.cur_schedule[0][2] == 1:
                         self.add_passenger(-1)
-                        # # 插入路程安排到数据库
-                        # # 使用cursor()方法获取操作游标
-                        # cursor = self.cnn.cursor()
-                        # # SQL插入语句
-                        # q = "insert into schedule(conditions,driverid,latitude,longitude,remain,time) values (" + 1 + "," + self.driver_id + "," + LQ[self.cur_location-1][1] + "," + LQ[self.cur_location-1][0] + "," + self.get_num_of_seats_remaining() + "," + t_cur + ")"
-                        # try:
-                        #     # 执行sql语句
-                        #     cursor.execute(q)
-                        #     # 提交到数据库执行
-                        #     self.cnn.commit()
-                        # except:
-                        #     # Rollback in case there is any error
-                        #     self.cnn.rollback()
+                        # 插入路程安排到数据库
+                        # 使用cursor()方法获取操作游标
+                        cursor = self.cnn.cursor()
+                        # SQL插入语句
+                        q = "insert into schedule(conditions,driverid,latitude,longitude,remain,time) values (" + str(1) + "," + str(self.driver_id) + "," + str(LQ[self.cur_location-1][1]) + "," + str(LQ[self.cur_location-1][0]) + "," + str(self.get_num_of_seats_remaining()) + ", str_to_date(\'%s\','%%Y-%%m-%%d %%H:%%i:%%s'))"%(t_cur.strftime("%Y-%m-%d %H:%M:%S"))
+                        try:
+                            # 执行sql语句
+                            cursor.execute(q)
+                            # 提交到数据库执行
+                            self.cnn.commit()
+                        except:
+                            # Rollback in case there is any error
+                            self.cnn.rollback()
                         del self.cur_schedule[0]
                     else:
-                        # # 插入路程安排到数据库
-                        # # 使用cursor()方法获取操作游标
-                        # cursor = self.cnn.cursor()
-                        # # SQL插入语句
-                        # q = "insert into schedule(conditions,driverid,latitude,longitude,remain,time) values (" + 0 + "," + self.driver_id + "," + LQ[self.cur_location-1][1] + "," + LQ[self.cur_location-1][0] + "," + self.get_num_of_seats_remaining() + "," + t_cur + ")"
-                        # try:
-                        #     # 执行sql语句
-                        #     cursor.execute(q)
-                        #     # 提交到数据库执行
-                        #     self.cnn.commit()
-                        # except:
-                        #     # Rollback in case there is any error
-                        #     self.cnn.rollback()
+                        # 插入路程安排到数据库
+                        # 使用cursor()方法获取操作游标
+                        cursor = self.cnn.cursor()
+                        # SQL插入语句
+                        q = "insert into schedule(conditions,driverid,latitude,longitude,remain,time) values (" + str(0) + "," + str(self.driver_id) + "," + str(LQ[self.cur_location-1][1]) + "," + str(LQ[self.cur_location-1][0]) + "," + str(self.get_num_of_seats_remaining()) + ", str_to_date(\'%s\','%%Y-%%m-%%d %%H:%%i:%%s'))"%(t_cur.strftime("%Y-%m-%d %H:%M:%S"))
+                        try:
+                            # 执行sql语句
+                            cursor.execute(q)
+                            # 提交到数据库执行
+                            self.cnn.commit()
+                        except:
+                            # Rollback in case there is any error
+                            self.cnn.rollback()
                         del self.cur_schedule[0]
                 else:
                     break
@@ -104,17 +104,17 @@ class Driver:
                 break
             if t * self.speed > D[self.cur_location-1][int(self.route[0])-1] / 2:
                 old_location = self.cur_location
-                # # 运行数据保存模块
-                # cursor = self.cnn.cursor()
-                # q = "insert into route(driverid,latitude,longitude,time) values (" + self.driver_id + "," + LQ[old_location-1][1] +"," + LQ[old_location-1][0] + "," + t_cur + ")"
-                # try:
-                #     # 执行sql语句
-                #     cursor.execute(q)
-                #     # 提交到数据库执行
-                #     self.cnn.commit()
-                # except:
-                #     # Rollback in case there is any error
-                #     self.cnn.rollback()
+                # 运行数据保存模块
+                cursor = self.cnn.cursor()
+                q = "insert into route(driverid,latitude,longitude,time) values (" + str(self.driver_id) + "," + str(LQ[old_location-1][1]) +"," + str(LQ[old_location-1][0]) + ", str_to_date(\'%s\','%%Y-%%m-%%d %%H:%%i:%%s'))"%(t_cur.strftime("%Y-%m-%d %H:%M:%S"))
+                try:
+                    # 执行sql语句
+                    cursor.execute(q)
+                    # 提交到数据库执行
+                    self.cnn.commit()
+                except:
+                    # Rollback in case there is any error
+                    self.cnn.rollback()
                 self.cur_location = int(self.route[0])
                 del self.route[0]
 

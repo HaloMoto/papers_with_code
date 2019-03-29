@@ -11,7 +11,7 @@ import pickle
 from math import exp, factorial, pow
 import random
 import datetime
-from service.I_Share_Algorithm import combination_of_multiple_orders, dual_side_taxi_searching, recommendation
+from service.I_Share_Algorithm import combination_of_multiple_orders, dual_side_taxi_searching, recommendation, find_the_nearest_empty_car_for_one
 
 ## 外部文件加载 ##
 # 空间距离矩阵
@@ -212,10 +212,17 @@ while endtime <= Timeframe.untildatetime:
         """
         无聚类
         """
-        # 双边查找算法
+        # # 双边查找算法
+        # for query in cluster.query_list:
+        #     # print("状态2",query.condition)
+        #     dual_side_taxi_searching(driver_list, regl_Hexg_grids, query, starttime)
+
+        """
+        无共享
+        """
         for query in cluster.query_list:
-            # print("状态2",query.condition)
-            dual_side_taxi_searching(driver_list, regl_Hexg_grids, query, starttime)
+            if find_the_nearest_empty_car_for_one(query, driver_list, regl_Hexg_grids, starttime):
+                print("找到车")
 
     ## 空车司机使用推荐算法
     ## test ##

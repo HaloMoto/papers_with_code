@@ -13,9 +13,9 @@ class Driver:
     # 车速，m/s
     speed = 25
 
-    def __init__(self, driver_id):
+    def __init__(self, driver_id, num_of_intersections, num_of_grids, num_of_clusters):
         # 司机当前位置，模拟过程中，随机分配
-        self.cur_location = random.randint(1,430)
+        self.cur_location = random.randint(1,num_of_intersections+num_of_grids+num_of_clusters)
         # 司机id
         self.driver_id = driver_id
         # 车上已有乘客数
@@ -65,7 +65,7 @@ class Driver:
                         # # 使用cursor()方法获取操作游标
                         # cursor = self.cnn.cursor()
                         # # SQL插入语句
-                        # q = "insert into schedule(conditions,driverid,latitude,longitude,remain,time) values (" + 1 + "," + self.driver_id + "," + LQ[self.cur_location-1][1] + "," + LQ[self.cur_location-1][0] + "," + self.get_num_of_seats_remaining() + "," + t_cur + ")"
+                        # q = "insert into schedule(conditions,driverid,latitude,longitude,remain,time) values (" + str(1) + "," + str(self.driver_id) + "," + str(LQ[self.cur_location-1][1]) + "," + str(LQ[self.cur_location-1][0]) + "," + str(self.get_num_of_seats_remaining()) + ", str_to_date(\'%s\','%%Y-%%m-%%d %%H:%%i:%%s'))"%(t_cur.strftime("%Y-%m-%d %H:%M:%S"))
                         # try:
                         #     # 执行sql语句
                         #     cursor.execute(q)
@@ -80,7 +80,7 @@ class Driver:
                         # # 使用cursor()方法获取操作游标
                         # cursor = self.cnn.cursor()
                         # # SQL插入语句
-                        # q = "insert into schedule(conditions,driverid,latitude,longitude,remain,time) values (" + 0 + "," + self.driver_id + "," + LQ[self.cur_location-1][1] + "," + LQ[self.cur_location-1][0] + "," + self.get_num_of_seats_remaining() + "," + t_cur + ")"
+                        # q = "insert into schedule(conditions,driverid,latitude,longitude,remain,time) values (" + str(0) + "," + str(self.driver_id) + "," + str(LQ[self.cur_location-1][1]) + "," + str(LQ[self.cur_location-1][0]) + "," + str(self.get_num_of_seats_remaining()) + ", str_to_date(\'%s\','%%Y-%%m-%%d %%H:%%i:%%s'))"%(t_cur.strftime("%Y-%m-%d %H:%M:%S"))
                         # try:
                         #     # 执行sql语句
                         #     cursor.execute(q)
@@ -106,7 +106,7 @@ class Driver:
                 old_location = self.cur_location
                 # # 运行数据保存模块
                 # cursor = self.cnn.cursor()
-                # q = "insert into route(driverid,latitude,longitude,time) values (" + self.driver_id + "," + LQ[old_location-1][1] +"," + LQ[old_location-1][0] + "," + t_cur + ")"
+                # q = "insert into route(driverid,latitude,longitude,time) values (" + str(self.driver_id) + "," + str(LQ[old_location-1][1]) +"," + str(LQ[old_location-1][0]) + ", str_to_date(\'%s\','%%Y-%%m-%%d %%H:%%i:%%s'))"%(t_cur.strftime("%Y-%m-%d %H:%M:%S"))
                 # try:
                 #     # 执行sql语句
                 #     cursor.execute(q)
