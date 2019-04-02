@@ -5,7 +5,9 @@ from aip import AipImageSearch
 
 a = 'ab'+'bc'
 print(a)
-
+a = {"a":123}
+print(a["a"])
+print("a" in a.keys())
 # """ 你的APPID AK SK """
 # APP_ID = '15900910'
 # API_KEY = 'w9GDvddBuCn86NwxSTfFiocG'

@@ -85,15 +85,15 @@
 
       <div class="am-tabs-bd">
         <div class="am-tab-panel am-fade am-in am-active" id="tab1">
-          <form class="am-form" action="/same_put_in/" method="post" enctype="multipart/form-data">
+          <form class="am-form" action="/same_put_in_url/" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="am-g am-margin-top">
-                <div class="am-u-sm-4 am-u-md-2 am-text-right">上传本地图片</div>
-                <div class="am-u-sm-8 am-u-md-10">
-                  <div class="am-form-group">
-                    <input type="file" id="user-pic1" name="image" accept="image/jpeg,image/png,image/bmp" required/>
+                <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                    网络图片地址
                   </div>
-                </div>
+                  <div class="am-u-sm-8 am-u-md-4 am-u-end col-end">
+                    <input type="text" id="url1" class="am-input-sm" name="URL" required/>
+                  </div>
               </div>
 
               <div class="am-g am-margin-top">
@@ -113,16 +113,16 @@
         </div>
 
         <div class="am-tab-panel am-fade" id="tab2">
-          <form class="am-form" action="/same_check/" method="post" enctype="multipart/form-data">
+          <form class="am-form" action="/same_check_url/" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="am-g am-margin-top">
-                <div class="am-u-sm-4 am-u-md-2 am-text-right">上传本地图片</div>
-                <div class="am-u-sm-8 am-u-md-10">
-                  <div class="am-form-group">
-                    <input type="file" id="user-pic2" name="image" accept="image/jpeg,image/png,image/bmp" required/>
+                <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                    网络图片地址
                   </div>
-                </div>
-            </div>
+                  <div class="am-u-sm-8 am-u-md-4 am-u-end col-end">
+                    <input type="text" id="url2" class="am-input-sm" name="URL" required/>
+                  </div>
+              </div>
 
             <div class="am-g am-margin-top">
                 <div class="am-u-sm-4 am-u-md-2 am-text-right">
@@ -141,15 +141,15 @@
         </div>
 
         <div class="am-tab-panel am-fade" id="tab3">
-          <form class="am-form" action="/same_update/" method="post" enctype="multipart/form-data">
+          <form class="am-form" action="/same_update_url/" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="am-g am-margin-top">
-                <div class="am-u-sm-4 am-u-md-2 am-text-right">上传本地图片</div>
-                <div class="am-u-sm-8 am-u-md-10">
-                  <div class="am-form-group">
-                    <input type="file" id="user-pic3" name="image" accept="image/jpeg,image/png,image/bmp" required/>
+                <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                    网络图片地址
                   </div>
-                </div>
+                  <div class="am-u-sm-8 am-u-md-4 am-u-end col-end">
+                    <input type="text" id="url3" class="am-input-sm" name="URL" required/>
+                  </div>
               </div>
 
               <div class="am-g am-margin-top">
@@ -169,16 +169,16 @@
         </div>
 
         <div class="am-tab-panel am-fade" id="tab4">
-          <form class="am-form" action="/same_delete/" method="post" enctype="multipart/form-data">
+          <form class="am-form" action="/same_delete_url/" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="am-g am-margin-top">
-                <div class="am-u-sm-4 am-u-md-2 am-text-right">上传本地图片</div>
-                <div class="am-u-sm-8 am-u-md-10">
-                  <div class="am-form-group">
-                    <input type="file" id="user-pic4" name="image" accept="image/jpeg,image/png,image/bmp" required/>
+                <div class="am-u-sm-4 am-u-md-2 am-text-right">
+                    网络图片地址
                   </div>
-                </div>
-            </div>
+                  <div class="am-u-sm-8 am-u-md-4 am-u-end col-end">
+                    <input type="text" id="url4" class="am-input-sm" name="URL" required/>
+                  </div>
+              </div>
 
             <div class="am-margin">
                 <button type="submit" class="am-btn am-btn-primary am-btn-xs btn-loading-example">删除</button>
@@ -222,10 +222,10 @@
 <script>
 $('.btn-loading-example').click(function () {
   var $btn = $(this)
-  var oInput1 = document.getElementById('user-pic1');
-  var oInput2 = document.getElementById('user-pic2');
-  var oInput3 = document.getElementById('user-pic3');
-  var oInput4 = document.getElementById('user-pic4');
+  var oInput1 = document.getElementById('url1');
+  var oInput2 = document.getElementById('url2');
+  var oInput3 = document.getElementById('url3');
+  var oInput4 = document.getElementById('url4');
   if(oInput1.value != ''){
       $btn.button('loading');
   }
