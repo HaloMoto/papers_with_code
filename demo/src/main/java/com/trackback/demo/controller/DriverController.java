@@ -35,8 +35,8 @@ public class DriverController {
 
     @RequestMapping(value = "/searchDriver", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public String search_driver(int driverid, Timestamp after, Timestamp before, Model model){
-        model.addAttribute("route", routeRepository.findAllByDriveridAndTimeBetween(driverid, after, before));
-        model.addAttribute("schedule", scheduleRepository.findAllByDriveridAndTimeBetween(driverid, after, before));
+        model.addAttribute("route", routeRepository.findAllByDriveridAndTimeBetweenOrderByTimeAsc(driverid, after, before));
+        model.addAttribute("schedule", scheduleRepository.findAllByDriveridAndTimeBetweenOrderByTimeAsc(driverid, after, before));
         System.out.println(after);
         System.out.println(before);
         return "lushu";
@@ -49,8 +49,8 @@ public class DriverController {
         Map<Integer, List<Route>> route = new HashMap();
         Map<Integer, List<Schedule>> schedule = new HashMap();
         for (int i = driverid_start; i < driverid_end; i++){
-            route.put(i, routeRepository.findAllByDriveridAndTimeBetween(i, after, before));
-            schedule.put(i, scheduleRepository.findAllByDriveridAndTimeBetween(i, after, before));
+            route.put(i, routeRepository.findAllByDriveridAndTimeBetweenOrderByTimeAsc(i, after, before));
+            schedule.put(i, scheduleRepository.findAllByDriveridAndTimeBetweenOrderByTimeAsc(i, after, before));
         }
         model.addAttribute("route", route);
         model.addAttribute("schedule", schedule);

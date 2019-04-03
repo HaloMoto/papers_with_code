@@ -7,5 +7,5 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
-    List<Schedule> findAllByDriveridAndTimeBetween(int driverid, Timestamp after, Timestamp before);
+    List<Schedule> findAllByDriveridAndTimeBetweenOrderByTimeAsc(int driverid, Timestamp after, Timestamp before);
 }

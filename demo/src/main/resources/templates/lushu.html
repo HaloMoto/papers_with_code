@@ -46,13 +46,13 @@
     var landmPois = [];
     for(var i = 0; i < [[${schedule}]].length; i++){
         if([[${schedule}]][i].conditions == 0){
-            var point = [{lng:[[${schedule}]][i].longitude,lat:[[${schedule}]][i].latitude,html:'<h1>上车</h1><h3>车上乘客数：'+[[${schedule}]][i].remain+'</h3>',pauseTime:2}];
+            var point = [{lng:[[${schedule}]][i].longitude,lat:[[${schedule}]][i].latitude,html:'<h1>上车</h1><h3>车上空座位数：'+[[${schedule}]][i].remain+'</h3>',pauseTime:2}];
             console.log(point);
             map.addOverlay(new BMap.Marker(new BMap.Point([[${schedule}]][i].longitude,[[${schedule}]][i].latitude), {icon:accIcon}));
             landmPois = landmPois.concat(point);
         }
         else{
-            var point = [{lng:[[${schedule}]][i].longitude,lat:[[${schedule}]][i].latitude,html:'<h1>下车</h1><br><h3>车上乘客数：'+[[${schedule}]][i].remain+'</h3>',pauseTime:2}];
+            var point = [{lng:[[${schedule}]][i].longitude,lat:[[${schedule}]][i].latitude,html:'<h1>下车</h1><br><h3>车上空座位数：'+[[${schedule}]][i].remain+'</h3>',pauseTime:2}];
             map.addOverlay(new BMap.Marker(new BMap.Point([[${schedule}]][i].longitude,[[${schedule}]][i].latitude), {icon:tarIcon}));
             landmPois = landmPois.concat(point);
         }
@@ -68,7 +68,7 @@
         defaultContent:[[${schedule}]][0].driverid,//"从天安门到百度大厦"
         autoView:false,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
         icon  : new BMap.Icon('http://lbsyun.baidu.com/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),
-        speed: 40,
+        speed: 100,
         enableRotation:true,//是否设置marker随着道路的走向进行旋转
         landmarkPois: landmPois});
     //绑定事件

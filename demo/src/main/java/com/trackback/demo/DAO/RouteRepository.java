@@ -7,6 +7,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface RouteRepository extends JpaRepository<Route, Integer> {
-    List<Route> findAllByDriveridAndTimeBetween(int driverid, Timestamp after, Timestamp before);
+    List<Route> findAllByDriveridAndTimeBetweenOrderByTimeAsc(int driverid, Timestamp after, Timestamp before);
 
 }

@@ -3,17 +3,18 @@
 
 from aip import AipImageSearch
 
-a = 'ab'+'bc'
-print(a)
-a = {"a":123}
-print(a["a"])
-print("a" in a.keys())
-# """ 你的APPID AK SK """
-# APP_ID = '15900910'
-# API_KEY = 'w9GDvddBuCn86NwxSTfFiocG'
-# SECRET_KEY = 'W8GgfxwpMpFjDlrFV4mLT1i1Y6pu4Lx1'
-#
-# client = AipImageSearch(APP_ID, API_KEY, SECRET_KEY)
+# a = 'ab'+'bc'
+# print(a)
+# a = {"a":123}
+# print(a["a"])
+# print("a" in a.keys())
+""" 你的APPID AK SK """
+APP_ID = '15900910'
+API_KEY = 'w9GDvddBuCn86NwxSTfFiocG'
+SECRET_KEY = 'W8GgfxwpMpFjDlrFV4mLT1i1Y6pu4Lx1'
+
+client = AipImageSearch(APP_ID, API_KEY, SECRET_KEY)
+print(client.productDeleteBySign("1160357892,4224460940"))
 #
 # """  读取图片 """
 # def get_file_content(filePath):
