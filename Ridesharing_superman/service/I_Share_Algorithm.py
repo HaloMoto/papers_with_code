@@ -536,10 +536,10 @@ def recommendation(driver_list, pickup_clusters, t_cur, regl_Hexg_grids, amplifi
                             three_passenger_car.add(driver_tuple[0])
                     elif driver_tuple[1] > t_cur + datetime.timedelta(seconds=t_go):
                         break
-            ## 计算在当前时间到当前时间之后t_go时间内司机带走多少乘客
+            ## 计算在starttime_temp到当前时间之后t_go时间内司机带走多少乘客
             num_of_passengers_taken_away = floor(a*len(empty_car)+b*len(one_passenger_car)+c*len(two_passenger_car)+d*len(three_passenger_car))
-            ## t_go有多少个单位时间
-            num_unit_time = ceil(t_go / Timeframe.windowsize.seconds)
+            ## 计算在starttime_temp到(当前时间+t_go)有多少个单位时间
+            num_unit_time = ceil((t_go+ (starttime_temp-t_cur).seconds) / Timeframe.windowsize.seconds)
             # 该区域顾客到达速率
             V_arrival = pickup_clusters[nearest_cluster_id-1].avg_of_each_duration[time_slot - 1] / (Cluster.dt * 60) * Timeframe.windowsize.seconds
             # 对区域顾客到达速率进行放大
@@ -588,8 +588,8 @@ def recommendation(driver_list, pickup_clusters, t_cur, regl_Hexg_grids, amplifi
                 num_of_passengers_taken_away = floor(
                     a * len(empty_car) + b * len(one_passenger_car) + c * len(two_passenger_car) + d * len(
                         three_passenger_car))
-                ## t_go有多少个单位时间
-                num_unit_time = ceil(t_go / Timeframe.windowsize.seconds)
+                ## 计算在starttime到(当前时间+t_go)有多少个单位时间
+                num_unit_time = ceil((t_go + (starttime_temp - t_cur).seconds) / Timeframe.windowsize.seconds)
                 # 该区域顾客到达速率
                 V_arrival = pickup_clusters[int(cluster_id) - 1].avg_of_each_duration[time_slot - 1] / (
                             Cluster.dt * 60) * Timeframe.windowsize.seconds
