@@ -91,7 +91,7 @@ def combination_of_multiple_orders(query_list, regl_Hexg_grids, driver_list, t_c
             # 将coordinates列表转变为数组
             coordinates = np.array(coordinates)
             # 调用K-Means算法
-            centroid, labels = kmeans2(coordinates, k, iter=20, minit='points')
+            centroid, labels = kmeans2(coordinates, k, iter=5, minit='points')
             ## 获取分类结果
             # 分类结果保存字典中
             result_of_classifier = dict()
@@ -507,8 +507,8 @@ def recommendation(driver_list, pickup_clusters, t_cur, regl_Hexg_grids, amplifi
             ## 司机到达最近区域所在的时间段
             time_slot = int(((t_cur - Timeframe.starttime).seconds + t_go) / 60 / Cluster.dt) + 1
             # 如果时间段超过6，就等于6
-            if time_slot > 6:
-                time_slot = 6
+            if time_slot > 10:
+                time_slot = 10
             # 第time_slot段时间的开始时间
             starttime_temp = Timeframe.starttime + datetime.timedelta(seconds=(time_slot-1)*60*Cluster.dt)
             ## 统计当前时间以及在当前时间过后的t_go时间内，会有多少个空车司机、一个乘客司机、两个乘客司机、三个乘客司机
@@ -554,8 +554,8 @@ def recommendation(driver_list, pickup_clusters, t_cur, regl_Hexg_grids, amplifi
                 ## 司机到达最近区域所在的时间段
                 time_slot = int(((t_cur - Timeframe.starttime).seconds + t_go) / 60 / Cluster.dt) + 1
                 # 列表访问越界处理
-                if time_slot > 6:
-                    time_slot = 6
+                if time_slot > 10:
+                    time_slot = 10
                 # 第time_slot段时间的开始时间
                 starttime_temp = Timeframe.starttime + datetime.timedelta(seconds=(time_slot - 1) * 60 * Cluster.dt)
                 ## 统计当前时间以及在当前时间过后的t_go时间内，会有多少个空车司机、一个乘客司机、两个乘客司机、三个乘客司机

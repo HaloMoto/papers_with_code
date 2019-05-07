@@ -36,6 +36,7 @@ with open("../data/node_all.txt","r") as file_to_read:
     num_of_grids = int(file_to_read.readline())
     # 从文件中读取聚类数
     num_of_clusters = int(file_to_read.readline())
+num_of_delivery_clusters = len(delivery_clusters)
 # 节点所属格子
 with open('../data/nodes_belong_to_which_grid.txt', "rb") as f:
     nodes_belong_to_which_grid = pickle.load(f)
@@ -61,7 +62,7 @@ query_id = 1
 
 ## 生成司机池, 司机id是从0开始的 ##
 for i in range(int(num_of_drivers)):
-    driver_list.append(Driver(i))
+    driver_list.append(Driver(i,num_of_intersections,num_of_grids,num_of_clusters))
 
 ### 需要输入的一些模型参数 ###
 # 假设每个司机接客成功率阈值相等
@@ -158,7 +159,7 @@ while endtime <= Timeframe.untildatetime:
             # 生成num_of_arrivals个顾客
             for i in range(num_of_arrivals):
                 pickup_id = int(random.sample(cluster.grids_included, 1)[0]) + num_of_intersections
-                temp = random.randint(1,delivery_hot_index[time_slot-1][num_of_durations])
+                temp = random.randint(1,delivery_hot_index[time_slot-1][num_of_delivery_clusters])
                 for j in range(len(delivery_clusters)):
                     if temp > delivery_hot_index[time_slot-1][j] and temp <= delivery_hot_index[time_slot-1][j+1]:
                         ## test ##
@@ -212,17 +213,17 @@ while endtime <= Timeframe.untildatetime:
         """
         无聚类
         """
-        # # 双边查找算法
-        # for query in cluster.query_list:
-        #     # print("状态2",query.condition)
-        #     dual_side_taxi_searching(driver_list, regl_Hexg_grids, query, starttime)
+        # 双边查找算法
+        for query in cluster.query_list:
+            # print("状态2",query.condition)
+            dual_side_taxi_searching(driver_list, regl_Hexg_grids, query, starttime)
 
         """
         无共享
         """
-        for query in cluster.query_list:
-            if find_the_nearest_empty_car_for_one(query, driver_list, regl_Hexg_grids, starttime):
-                print("找到车")
+        # for query in cluster.query_list:
+        #     if find_the_nearest_empty_car_for_one(query, driver_list, regl_Hexg_grids, starttime):
+        #         print("找到车")
 
     ## 空车司机使用推荐算法
     ## test ##
@@ -297,6 +298,7 @@ for cluster in pickup_clusters:
 for driver in driver_list:
     number_of_order_served += driver.number_of_order
     print(driver.driver_id, driver.number_of_order)
+print("0号司机",driver_list[0].number_of_order)
 # 司机在有共享情况下运行的总距离
 for driver in driver_list:
     total_distance_traveled += driver.total_time_traveled * driver.speed

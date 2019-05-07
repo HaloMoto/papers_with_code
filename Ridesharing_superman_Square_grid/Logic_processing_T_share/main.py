@@ -36,6 +36,7 @@ with open("../data/node_all.txt","r") as file_to_read:
     num_of_grids = int(file_to_read.readline())
     # 从文件中读取聚类数
     num_of_clusters = int(file_to_read.readline())
+num_of_delivery_clusters = len(delivery_clusters)
 # 节点所属格子
 with open('../data/nodes_belong_to_which_grid.txt', "rb") as f:
     nodes_belong_to_which_grid = pickle.load(f)
@@ -64,6 +65,10 @@ for i in range(int(num_of_drivers)):
     driver_list.append(Driver(i, num_of_intersections, num_of_grids, num_of_clusters))
 
 ### 需要输入的一些模型参数 ###
+# 假设每个司机接客成功率阈值相等
+RSR_threshold = 0.5
+# 每个区域达到多少个数（拼单阈值）进行拼单算法
+RON_threshold = 10
 # 单位时间内到达顾客数
 num_of_arrivals = 1
 
@@ -155,7 +160,7 @@ while endtime <= Timeframe.untildatetime:
             # 生成num_of_arrivals个顾客
             for i in range(num_of_arrivals):
                 pickup_id = int(random.sample(cluster.grids_included, 1)[0]) + num_of_intersections
-                temp = random.randint(1,delivery_hot_index[time_slot-1][num_of_durations])
+                temp = random.randint(1,delivery_hot_index[time_slot-1][num_of_delivery_clusters])
                 for j in range(len(delivery_clusters)):
                     if temp > delivery_hot_index[time_slot-1][j] and temp <= delivery_hot_index[time_slot-1][j+1]:
                         ## test ##
@@ -209,23 +214,23 @@ while endtime <= Timeframe.untildatetime:
         """
         无聚类
         """
-        # # 双边查找算法
-        # for query in cluster.query_list:
-        #     # print("状态2",query.condition)
-        #     dual_side_taxi_searching(driver_list, sqr_grids, query, starttime)
+        # 双边查找算法
+        for query in cluster.query_list:
+            # print("状态2",query.condition)
+            dual_side_taxi_searching(driver_list, sqr_grids, query, starttime)
 
         """
         无共享
         """
-        for query in cluster.query_list:
-            if find_the_nearest_empty_car_for_one(query, driver_list, sqr_grids,starttime):
-                print("找到车")
+        # for query in cluster.query_list:
+        #     if find_the_nearest_empty_car_for_one(query, driver_list, sqr_grids,starttime):
+        #         print("找到车")
 
     ## 空车司机使用推荐算法
     ## test ##
     # print("recommendation")
     ## test ##
-    recommendation(driver_list,pickup_clusters,starttime,sqr_grids,amplification_factor)
+    # recommendation(driver_list,pickup_clusters,starttime,sqr_grids,amplification_factor)
     ## 更新司机当前位置，以及更新每个格子区域司机列表
     for driver in driver_list:
         # 如果司机车上乘客不为0
@@ -233,16 +238,16 @@ while endtime <= Timeframe.untildatetime:
             driver.total_time_traveled += (endtime-starttime).seconds
         # 司机行驶到下一个点
         driver.reach_the_next_point((endtime-starttime).seconds, starttime)
-        # 跟踪司机0的轨迹
-        if driver.driver_id == 0:
-            print("-------------------------------------------")
-            print(starttime)
-            print(driver.cur_location)
-            print(driver.cur_schedule)
-            print(driver.route)
-            print(driver.assist_t)
-            print(driver.num_of_occupied_position)
-            print(driver.total_time_traveled)
+        # # 跟踪司机0的轨迹
+        # if driver.driver_id == 0:
+        #     print("-------------------------------------------")
+        #     print(starttime)
+        #     print(driver.cur_location)
+        #     print(driver.cur_schedule)
+        #     print(driver.route)
+        #     print(driver.assist_t)
+        #     print(driver.num_of_occupied_position)
+        #     print(driver.total_time_traveled)
 
     ## 删除被服务的订单
     for cluster in pickup_clusters:

@@ -128,7 +128,7 @@ for grid in sqr_grids:
 
 ### 生成接载点cluster ###
 # cluster数目
-num_of_pickup_cluster = 10
+num_of_pickup_cluster = 12
 # cluster集合
 pickup_clusters = []
 # 每个区域的历史接载点集合
